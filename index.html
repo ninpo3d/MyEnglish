@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyEnglish: Золотые 20% грамматики (Драгункин / Парето)</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🇬🇧</text></svg>">
+</head>
+<body>
+
+  <!-- ВЕРХНЯЯ ШАПКА -->
+  <header class="app-header">
+    <div class="logo-area">
+      <div class="logo-icon">⚡</div>
+      <div>
+        <div class="logo-title">MyEnglish: Конструктор речи</div>
+        <div class="logo-subtitle">Золотые 20% грамматики Парето</div>
+      </div>
+    </div>
+
+    <div class="header-stats">
+      <div class="stat-pill stat-level" id="stat-level">Уровень 1</div>
+      <div class="stat-pill stat-xp" id="stat-xp">0 XP</div>
+      <div class="stat-pill stat-streak" id="stat-streak" title="Серия правильных ответов подряд">🔥 0</div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-icon" id="btn-toggle-sound" title="Включить / выключить синтезатор звука">🔊 Звук: ВКЛ</button>
+      <button class="btn-icon" id="btn-reset-stats" title="Сбросить прогресс">Сброс</button>
+    </div>
+  </header>
+
+  <!-- ПАНЕЛЬ ТАБОВ / РЕЖИМОВ -->
+  <nav class="nav-tabs-bar">
+    <button class="nav-tab-btn active" data-tab="builder">
+      <span>🧩</span> Конструктор речи
+    </button>
+    <button class="nav-tab-btn" data-tab="hunter">
+      <span>🕵️</span> Охотник за багами
+    </button>
+    <button class="nav-tab-btn" data-tab="switchboard">
+      <span>⚡</span> Рубильники
+    </button>
+    <button class="nav-tab-btn" data-tab="listening">
+      <span>🎧</span> На слух
+    </button>
+    <button class="nav-tab-btn" data-tab="sprint">
+      <span>⏱️</span> Блиц-спринт
+    </button>
+    <button class="nav-tab-btn" data-tab="scenarios">
+      <span>🎭</span> Диалоги B1
+    </button>
+    <button class="nav-tab-btn" data-tab="flashcards">
+      <span>🎴</span> Карточки B1
+    </button>
+    <button class="nav-tab-btn" data-tab="verbs">
+      <span>⚡</span> Глаголы
+    </button>
+    <button class="nav-tab-btn" data-tab="quiz">
+      <span>📝</span> Тест (Quiz)
+    </button>
+    <button class="nav-tab-btn" data-tab="handbook">
+      <span>📖</span> База правил & Связки
+    </button>
+  </nav>
+
+  <!-- ГЛАВНАЯ РАБОЧАЯ ОБЛАСТЬ -->
+  <main class="main-wrapper">
+    <div id="main-content">
+      <!-- Контент режимов генерируется динамически через ES-модули -->
+    </div>
+  </main>
+
+  <!-- Подключение bundle.js гарантирует работу как через сервер, так и двойным кликом по файлу -->
+  <script src="bundle.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((reg) => {
+          console.log('[PWA] Service Worker успешно зарегистрирован:', reg.scope);
+        }).catch((err) => {
+          console.log('[PWA] Регистрация SW пропущена (локальный файл/dev):', err.message);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
