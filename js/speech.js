@@ -173,25 +173,37 @@ class SpeechEngine {
     }
   }
 
+  getSpeechRecognitionClass() {
+    return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  }
+
   initRecognition() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = this.getSpeechRecognitionClass();
     if (!SpeechRecognition) {
       console.warn("Web Speech Recognition API не поддерживается в этом браузере.");
       return;
     }
+  }
 
-    this.recognition = new SpeechRecognition();
-    this.recognition.lang = "en-US";
-    this.recognition.continuous = false;
-    this.recognition.interimResults = false;
-    this.recognition.maxAlternatives = 1;
+  createRecognition() {
+    const SpeechRecognition = this.getSpeechRecognitionClass();
+    if (!SpeechRecognition) return null;
+
+    const rec = new SpeechRecognition();
+    rec.lang = "en-US";
+    rec.continuous = false;
+    rec.interimResults = true;
+    rec.maxAlternatives = 1;
+    return rec;
   }
 
   async ensureMicPermission() {
-    if (this.audioStream) return true;
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       try {
-        this.audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // ВАЖНО: На Android микрофон блокируется, если удерживать MediaStream!
+        // Освобождаем микрофон сразу после получения разрешения:
+        stream.getTracks().forEach((track) => track.stop());
         return true;
       } catch (e) {
         console.warn("getUserMedia permission error:", e);
@@ -202,48 +214,104 @@ class SpeechEngine {
   }
 
   async startListening(onResult, onError = null, onEnd = null) {
-    if (!this.recognition) {
-      if (onError) onError("Микрофон не поддерживается браузером. Используйте Chrome или Edge.");
+    const SpeechRecognition = this.getSpeechRecognitionClass();
+    if (!SpeechRecognition) {
+      if (onError) onError("Распознавание речи не поддерживается браузером. Используйте Chrome или Edge.");
       return;
     }
 
     if (this.isListening) {
-      this.recognition.stop();
-      this.isListening = false;
+      this.stopListening();
       return;
     }
 
-    await this.ensureMicPermission();
+    const permitted = await this.ensureMicPermission();
+    if (!permitted) {
+      if (onError) onError("Нет доступа к микрофону. Разрешите доступ в настройках браузера.");
+      return;
+    }
 
+    const rec = this.createRecognition();
+    if (!rec) {
+      if (onError) onError("Не удалось инициализировать систему распознавания речи.");
+      return;
+    }
+
+    this.recognition = rec;
     this.isListening = true;
 
-    this.recognition.onresult = (event) => {
-      this.isListening = false;
-      const transcript = event.results[0][0].transcript;
-      if (onResult) onResult(transcript);
+    let finalTranscript = "";
+    let lastInterim = "";
+    let hasDeliveredResult = false;
+
+    rec.onresult = (event) => {
+      let interim = "";
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        const res = event.results[i];
+        if (res.isFinal) {
+          finalTranscript += res[0].transcript;
+        } else {
+          interim += res[0].transcript;
+        }
+      }
+      if (interim) {
+        lastInterim = interim;
+      }
+
+      const text = (finalTranscript || lastInterim).trim();
+      if (finalTranscript.trim() && !hasDeliveredResult) {
+        hasDeliveredResult = true;
+        this.isListening = false;
+        try {
+          rec.stop();
+        } catch (e) {}
+        if (onResult) onResult(text);
+      }
     };
 
-    this.recognition.onerror = (err) => {
+    rec.onerror = (err) => {
       this.isListening = false;
-      if (onError) onError(err.error || "Ошибка микрофона");
+      let errorMsg = "Ошибка микрофона";
+      const code = err.error || "";
+
+      if (code === "no-speech") {
+        errorMsg = "Речь не обнаружена. Попробуйте сказать громче и ближе к микрофону.";
+      } else if (code === "not-allowed" || code === "service-not-allowed") {
+        errorMsg = "Доступ к микрофону запрещен. Разрешите микрофон в настройках.";
+      } else if (code === "network") {
+        errorMsg = "Ошибка сети сервиса распознавания. Если вы оффлайн, скачайте английский языковой пакет в настройках телефона (Настройки -> Язык и ввод -> Голосовой ввод Google -> Офлайн-распознавание).";
+      } else if (code === "audio-capture") {
+        errorMsg = "Микрофон занят другим приложением или недоступен.";
+      } else if (code) {
+        errorMsg = `Ошибка распознавания (${code})`;
+      }
+
+      if (onError) onError(errorMsg);
     };
 
-    this.recognition.onend = () => {
+    rec.onend = () => {
       this.isListening = false;
+      const finalText = (finalTranscript || lastInterim).trim();
+      if (!hasDeliveredResult && finalText) {
+        hasDeliveredResult = true;
+        if (onResult) onResult(finalText);
+      }
       if (onEnd) onEnd();
     };
 
     try {
-      this.recognition.start();
+      rec.start();
     } catch (e) {
       this.isListening = false;
-      if (onError) onError(e.message);
+      if (onError) onError(e.message || "Не удалось запустить микрофон.");
     }
   }
 
   stopListening() {
     if (this.recognition && this.isListening) {
-      this.recognition.stop();
+      try {
+        this.recognition.stop();
+      } catch (e) {}
       this.isListening = false;
     }
   }

@@ -1,5 +1,5 @@
 // Service Worker для автономной (офлайн) работы MyEnglish на смартфоне
-const CACHE_NAME = "myenglish-offline-v1";
+const CACHE_NAME = "myenglish-offline-v2";
 
 const ASSETS_TO_CACHE = [
   "./",
