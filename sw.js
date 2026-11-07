@@ -1,5 +1,5 @@
 // Service Worker для автономной (офлайн) работы EnglishPareto на смартфоне
-const CACHE_NAME = "englishpareto-offline-v12";
+const CACHE_NAME = "englishpareto-offline-v13";
 
 const ASSETS_TO_CACHE = [
   "./",

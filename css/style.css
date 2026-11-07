@@ -2072,9 +2072,9 @@ body {
     gap: 5px !important;
   }
 
-  /* Рабочая область: отступ снизу 96px под закреплённую панель действий */
+  /* Рабочая область: отступ снизу 130px под закреплённую панель действий */
   .main-wrapper {
-    padding: 10px 10px 96px !important;
+    padding: 10px 10px 130px !important;
   }
 
   .mode-header {
@@ -2092,9 +2092,9 @@ body {
     padding: 2px 8px !important;
   }
 
-  /* Карточка задания */
+  /* Карточка задания: гарантированный нижний отступ 75px, чтобы контент и кирпичики никогда не перекрывались нижней панелью */
   .task-card {
-    padding: 14px 12px !important;
+    padding: 14px 12px 75px !important;
     gap: 12px !important;
     border-radius: 16px !important;
   }
@@ -2141,7 +2141,7 @@ body {
     border-radius: 10px !important;
   }
 
-  /* Банк слов и собранная строка */
+  /* Банк слов и собранная строка: возможность скролла банка и гарантия доступа ко всем кирпичикам */
   .assembled-line {
     min-height: 48px !important;
     padding: 8px !important;
@@ -2155,8 +2155,20 @@ body {
   }
 
   .token-bank {
-    gap: 6px !important;
-    padding: 4px 0 !important;
+    gap: 7px !important;
+    padding: 4px 2px 12px !important;
+    max-height: 220px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Распорка высоты перед панелью кнопок */
+  .action-bar-spacer {
+    display: block !important;
+    height: 65px !important;
+    width: 100% !important;
+    pointer-events: none !important;
+    flex-shrink: 0 !important;
   }
 
   /* =================================================== */
@@ -2167,31 +2179,31 @@ body {
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    background: rgba(9, 14, 28, 0.95) !important;
-    backdrop-filter: blur(18px) !important;
-    -webkit-backdrop-filter: blur(18px) !important;
+    background: rgba(8, 13, 26, 0.96) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
     border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
-    padding: 9px 12px calc(9px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 7px 10px calc(7px + env(safe-area-inset-bottom, 0px)) !important;
     margin: 0 !important;
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     gap: 6px !important;
-    z-index: 100 !important;
-    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.7) !important;
+    z-index: 999 !important;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8) !important;
   }
 
   .action-buttons .btn {
     flex: 1 !important;
-    padding: 11px 6px !important;
-    font-size: 13px !important;
-    border-radius: 10px !important;
+    padding: 10px 4px !important;
+    font-size: 12.5px !important;
+    border-radius: 9px !important;
     justify-content: center !important;
     white-space: nowrap !important;
   }
 
   .action-buttons .btn-next {
-    flex: 1.5 !important;
+    flex: 1.4 !important;
     font-weight: 700 !important;
   }
 

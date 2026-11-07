@@ -142,6 +142,7 @@ export class ListeningMode {
         </div>
 
         <div class="feedback-area" id="listening-feedback"></div>
+        <div class="action-bar-spacer"></div>
 
         <div class="action-buttons">
           <button class="btn btn-secondary" id="btn-list-prev">◀ Назад</button>
@@ -669,6 +670,7 @@ export class ListeningMode {
       <div class="feedback-area" id="number-feedback">
         ${this.numberFeedback || ""}
       </div>
+      <div class="action-bar-spacer"></div>
 
       <div class="action-buttons">
         <button class="btn btn-secondary" id="btn-num-prev">◀ Предыдущее</button>

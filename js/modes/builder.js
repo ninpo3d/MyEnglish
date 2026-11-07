@@ -66,6 +66,7 @@ export class BuilderMode {
         </div>
 
         <div class="feedback-area" id="builder-feedback"></div>
+        <div class="action-bar-spacer"></div>
 
         <div class="action-buttons">
           <button class="btn btn-mic" id="btn-builder-mic" title="Назовите предложение вслух">🎙️ Сказать вслух</button>
