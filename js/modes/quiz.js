@@ -13,7 +13,8 @@ export class QuizMode {
   }
 
   init() {
-    this.loadQuestion(0);
+    const rand = Math.floor(Math.random() * QUIZ_TASKS.length);
+    this.loadQuestion(rand);
   }
 
   getCurrentQuestion() {
@@ -49,7 +50,10 @@ export class QuizMode {
     this.container.innerHTML = `
       <div class="mode-header">
         <div class="mode-badge">📝 Экспресс-тест Парето</div>
-        <div class="task-counter">Вопрос ${this.currentIndex + 1} из ${QUIZ_TASKS.length}</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="task-counter">Вопрос ${this.currentIndex + 1} из ${QUIZ_TASKS.length}</div>
+          <button class="btn-random-card" id="btn-quiz-random" title="Случайный вопрос">🎲</button>
+        </div>
       </div>
 
       <div class="task-card">
@@ -79,8 +83,9 @@ export class QuizMode {
         <div class="feedback-area" id="quiz-feedback"></div>
 
         <div class="action-buttons">
-          <button class="btn btn-next ${this.answered ? "" : "hidden"}" id="btn-quiz-next">
-            ${this.currentIndex + 1 === QUIZ_TASKS.length ? "Начать сначала ➔" : "Следующий вопрос ➔"}
+          <button class="btn btn-secondary" id="btn-quiz-prev">◀ Назад</button>
+          <button class="btn btn-next ${this.answered ? "btn-success-next" : ""}" id="btn-quiz-next">
+            ${this.answered ? "✨ Следующий вопрос ➔" : "Далее ➔"}
           </button>
         </div>
       </div>
@@ -98,6 +103,23 @@ export class QuizMode {
         this.selectOption(optIdx);
       });
     });
+
+    const randBtn = this.container.querySelector("#btn-quiz-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        const rand = Math.floor(Math.random() * QUIZ_TASKS.length);
+        this.loadQuestion(rand);
+      });
+    }
+
+    const prevBtn = this.container.querySelector("#btn-quiz-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.loadQuestion(this.currentIndex - 1);
+      });
+    }
 
     const nextBtn = this.container.querySelector("#btn-quiz-next");
     if (nextBtn) {

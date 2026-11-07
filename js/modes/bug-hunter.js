@@ -13,7 +13,9 @@ export class BugHunterMode {
   }
 
   init() {
-    this.loadTask(0);
+    const list = this.getFilteredTasks();
+    const rand = list.length ? Math.floor(Math.random() * list.length) : 0;
+    this.loadTask(rand);
   }
 
   getFilteredTasks() {
@@ -50,7 +52,10 @@ export class BugHunterMode {
           <button class="filter-btn ${this.filterLevel === "intermediate" ? "active" : ""}" data-level="intermediate">Средний</button>
           <button class="filter-btn ${this.filterLevel === "tricky" ? "active" : ""}" data-level="tricky">Хитрые ловушки</button>
         </div>
-        <div class="task-counter">${this.currentIndex + 1} из ${list.length}</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="task-counter">${this.currentIndex + 1} из ${list.length}</div>
+          <button class="btn-random-card" id="btn-hunter-random" title="Случайная фраза">🎲</button>
+        </div>
       </div>
 
       <div class="task-card">
@@ -71,8 +76,11 @@ export class BugHunterMode {
         <div class="feedback-area" id="hunter-feedback"></div>
 
         <div class="action-buttons">
+          <button class="btn btn-secondary" id="btn-hunter-prev">◀ Назад</button>
           <button class="btn btn-secondary" id="btn-no-error" ${this.answered ? "disabled" : ""}>Здесь нет ошибки</button>
-          <button class="btn btn-next ${this.answered ? "" : "hidden"}" id="btn-hunter-next">Следующая фраза ➔</button>
+          <button class="btn btn-next ${this.answered ? "btn-success-next" : ""}" id="btn-hunter-next">
+            ${this.answered ? "✨ Следующая фраза ➔" : "Далее ➔"}
+          </button>
         </div>
       </div>
     `;
@@ -107,6 +115,26 @@ export class BugHunterMode {
       noErrorBtn.addEventListener("click", () => {
         if (this.answered) return;
         this.handleNoErrorClick();
+      });
+    }
+
+    // Случайное задание
+    const randBtn = this.container.querySelector("#btn-hunter-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        const list = this.getFilteredTasks();
+        const rand = list.length ? Math.floor(Math.random() * list.length) : 0;
+        this.loadTask(rand);
+      });
+    }
+
+    // Кнопка "Назад"
+    const prevBtn = this.container.querySelector("#btn-hunter-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.loadTask(this.currentIndex - 1);
       });
     }
 

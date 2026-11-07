@@ -1,7 +1,7 @@
 // Логика режима «Конструктор предложений» (Sentence Assembler)
 import { BUILDER_TASKS } from "../data/builder-tasks.js";
 import { sound } from "../audio.js";
-import { speech } from "../speech.js";
+import { speech, normalizeSpeechTranscript } from "../speech.js";
 import { state } from "../state.js";
 
 export class BuilderMode {
@@ -13,7 +13,8 @@ export class BuilderMode {
   }
 
   init() {
-    this.loadTask(this.currentIndex || 0);
+    const rand = Math.floor(Math.random() * BUILDER_TASKS.length);
+    this.loadTask(rand);
   }
 
   getCurrentTask() {
@@ -40,7 +41,10 @@ export class BuilderMode {
     this.container.innerHTML = `
       <div class="mode-header">
         <div class="mode-badge">🧩 Конструктор речи</div>
-        <div class="task-counter">Задание ${this.currentIndex + 1} из ${BUILDER_TASKS.length}</div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="task-counter">Задание ${this.currentIndex + 1} из ${BUILDER_TASKS.length}</div>
+          <button class="btn-random-card" id="btn-builder-random" title="Случайное задание">🎲 Случайное</button>
+        </div>
       </div>
 
       <div class="task-card">
@@ -65,14 +69,32 @@ export class BuilderMode {
 
         <div class="action-buttons">
           <button class="btn btn-mic" id="btn-builder-mic" title="Назовите предложение вслух">🎙️ Сказать вслух</button>
+          <button class="btn btn-secondary" id="btn-builder-prev">◀ Назад</button>
           <button class="btn btn-secondary" id="btn-builder-reset">Сбросить</button>
           <button class="btn btn-primary" id="btn-builder-check">Проверить скелет</button>
-          <button class="btn btn-next hidden" id="btn-builder-next">Следующее задание ➔</button>
+          <button class="btn btn-next" id="btn-builder-next">Далее ➔</button>
         </div>
       </div>
     `;
 
     // Привязываем статические события один раз на карточку
+    const randBtn = this.container.querySelector("#btn-builder-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        const rand = Math.floor(Math.random() * BUILDER_TASKS.length);
+        this.loadTask(rand);
+      });
+    }
+
+    const prevBtn = this.container.querySelector("#btn-builder-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.loadTask(this.currentIndex - 1);
+      });
+    }
+
     const micBtn = this.container.querySelector("#btn-builder-mic");
     if (micBtn) {
       micBtn.addEventListener("click", () => this.handleMicInput());
@@ -109,14 +131,20 @@ export class BuilderMode {
     const task = this.getCurrentTask();
 
     micBtn.classList.add("mic-recording");
-    micBtn.innerHTML = `<span>🔴 Слушаю...</span>`;
+    micBtn.innerHTML = `<span>⏳ Подключение...</span>`;
+
+    if (feedbackEl) {
+      feedbackEl.innerHTML = `<div class="feedback-box" style="background: rgba(37,99,235,0.1); border: 1px dashed rgba(59,130,246,0.3);"><p>⏳ Включение микрофона... Говорите, когда загорится красный индикатор.</p></div>`;
+    }
 
     speech.startListening(
       (transcript) => {
         micBtn.classList.remove("mic-recording");
         micBtn.innerHTML = `<span>🎙️ Сказать вслух</span>`;
 
-        const words = transcript.replace(/[.,?!]/g, "").split(/\s+/).filter(Boolean);
+        const normalized = normalizeSpeechTranscript(transcript);
+        const words = normalized.replace(/[.,?!]/g, "").split(/\s+/).filter(Boolean);
+
         // Сверяем распознанные слова с банком
         this.selectedTokens = [];
         this.bankTokens = [...task.tokens];
@@ -144,6 +172,21 @@ export class BuilderMode {
       () => {
         micBtn.classList.remove("mic-recording");
         micBtn.innerHTML = `<span>🎙️ Сказать вслух</span>`;
+      },
+      (interim) => {
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `
+            <div class="feedback-box" style="background: rgba(37,99,235,0.15); border: 1px solid rgba(59,130,246,0.4);">
+              <p>🎙️ <b>Слышу в реальном времени:</b> <i>«${interim}»</i>...</p>
+            </div>
+          `;
+        }
+      },
+      () => {
+        micBtn.innerHTML = `<span>🔴 Слушаю, говорите...</span>`;
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `<div class="feedback-box" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);"><p>🔴 <b>Микрофон активен!</b> Произнесите предложение на английском.</p></div>`;
+        }
       }
     );
   }
@@ -216,7 +259,10 @@ export class BuilderMode {
     const checkBtn = this.container.querySelector("#btn-builder-check");
     const nextBtn = this.container.querySelector("#btn-builder-next");
     if (checkBtn) checkBtn.classList.remove("hidden");
-    if (nextBtn) nextBtn.classList.add("hidden");
+    if (nextBtn) {
+      nextBtn.classList.remove("btn-success-next");
+      nextBtn.innerHTML = "Далее ➔";
+    }
   }
 
   checkSolution() {
@@ -264,8 +310,10 @@ export class BuilderMode {
         replayBtn.addEventListener("click", () => speech.speak(fullSentence));
       }
 
-      if (checkBtn) checkBtn.classList.add("hidden");
-      if (nextBtn) nextBtn.classList.remove("hidden");
+      if (nextBtn) {
+        nextBtn.classList.add("btn-success-next");
+        nextBtn.innerHTML = "✨ Следующее задание ➔";
+      }
     } else {
       sound.playError();
       state.registerError();

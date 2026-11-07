@@ -16,7 +16,8 @@ export class SwitchboardMode {
   }
 
   init() {
-    this.loadTask(0);
+    const rand = Math.floor(Math.random() * SWITCHBOARD_TASKS.length);
+    this.loadTask(rand);
   }
 
   getCurrentTask() {
@@ -140,7 +141,10 @@ export class SwitchboardMode {
     this.container.innerHTML = `
       <div class="mode-header">
         <div class="mode-badge">⚡ Трансформер речи (Рубильники)</div>
-        <div class="task-counter">Задача ${this.currentIndex + 1} из ${SWITCHBOARD_TASKS.length}</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="task-counter">Задача ${this.currentIndex + 1} из ${SWITCHBOARD_TASKS.length}</div>
+          <button class="btn-random-card" id="btn-switch-random" title="Случайная задача">🎲</button>
+        </div>
       </div>
 
       <div class="task-card transformer-card">
@@ -235,8 +239,9 @@ export class SwitchboardMode {
         <div class="feedback-area" id="switch-feedback"></div>
 
         <div class="action-buttons">
+          <button class="btn btn-secondary" id="btn-switch-prev">◀ Назад</button>
           <button class="btn btn-primary" id="btn-check-switches">Зафиксировать рубильники</button>
-          <button class="btn btn-next hidden" id="btn-next-switches">Следующая цель ➔</button>
+          <button class="btn btn-next" id="btn-next-switches">Далее ➔</button>
         </div>
       </div>
     `;
@@ -255,6 +260,23 @@ export class SwitchboardMode {
         this.render();
       });
     });
+
+    const randBtn = this.container.querySelector("#btn-switch-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        const rand = Math.floor(Math.random() * SWITCHBOARD_TASKS.length);
+        this.loadTask(rand);
+      });
+    }
+
+    const prevBtn = this.container.querySelector("#btn-switch-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.loadTask(this.currentIndex - 1);
+      });
+    }
 
     const speakStageBtn = this.container.querySelector("#btn-speak-stage");
     if (speakStageBtn) {
@@ -312,8 +334,10 @@ export class SwitchboardMode {
         </div>
       `;
 
-      if (checkBtn) checkBtn.classList.add("hidden");
-      if (nextBtn) nextBtn.classList.remove("hidden");
+      if (nextBtn) {
+        nextBtn.classList.add("btn-success-next");
+        nextBtn.innerHTML = "✨ Следующая цель ➔";
+      }
     } else {
       sound.playError();
       state.registerError();

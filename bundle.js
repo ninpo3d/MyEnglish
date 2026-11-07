@@ -1600,17 +1600,18 @@ const SWITCHBOARD_TASKS = [
 
 /* --- js/data/listening-tasks.js --- */
 // База заданий для режима «Аудио-диктант / Понимание на слух» (Listening Mode)
-// Игрок слушает озвучку (без текста перед глазами) и собирает фразу из кирпичиков,
-// тренируя ухо различать артикли, окончания, редукции gonna/wanna/didn't.
+// 52 фразы: от живых разговорных связок и реакций до чисел, заказа еды, отелей и созвонов.
+// Тренирует ухо различать артикли, редукции (gonna/wanna/didn't) и слитную речь.
 
 const LISTENING_TASKS = [
+  // 1. Повседневный заказ и быт
   {
     id: "list_1",
     en: "I would like to order a cup of black coffee.",
     ru: "Я бы хотел заказать чашку черного кофе.",
-    hint: "Обрати внимание на вежливую связку: would like TO order.",
+    hint: "Вежливая связка: would like TO order + артикль a cup of.",
     audioFocus: "Слитная редукция «would like to» звучит почти как «would like-ta».",
-    tokens: ["I", "would", "like", "to", "order", "a", "cup", "of", "black", "coffee", "the", "an", "ordering"]
+    tokens: ["I", "would", "like", "to", "order", "a", "cup", "of", "black", "coffee", "the", "an", "ordering", "want"]
   },
   {
     id: "list_2",
@@ -1618,7 +1619,7 @@ const LISTENING_TASKS = [
     ru: "На улице сегодня очень холодно.",
     hint: "Погода = безличный Хозяин It is.",
     audioFocus: "Связка «It is» в беглой речи звучит как «It's».",
-    tokens: ["It", "is", "very", "cold", "outside", "today", "There", "Is", "was"]
+    tokens: ["It", "is", "very", "cold", "outside", "today", "There", "was", "the"]
   },
   {
     id: "list_3",
@@ -1626,7 +1627,7 @@ const LISTENING_TASKS = [
     ru: "Куда ты пошел вчера вечером?",
     hint: "Рубильник did вынесен вперед, глагол go в 1-й форме.",
     audioFocus: "«Where did you» на слух часто сливается в «Where d'you» или «Where-ja».",
-    tokens: ["Where", "did", "you", "go", "yesterday", "evening", "went", "do", "were"]
+    tokens: ["Where", "did", "you", "go", "yesterday", "evening", "went", "do", "were", "to"]
   },
   {
     id: "list_4",
@@ -1650,7 +1651,7 @@ const LISTENING_TASKS = [
     ru: "В этом гостиничном номере есть Wi-Fi?",
     hint: "Вопрос о наличии: рубильник Is перепрыгнул перед there.",
     audioFocus: "«Is there» произносится с мягким межзубным звуком «th».",
-    tokens: ["Is", "there", "Wi-Fi", "in", "this", "hotel", "room", "Are", "have", "has"]
+    tokens: ["Is", "there", "Wi-Fi", "in", "this", "hotel", "room", "Are", "have", "has", "the"]
   },
   {
     id: "list_7",
@@ -1667,8 +1668,538 @@ const LISTENING_TASKS = [
     hint: "Разговорное будущее: be gonna + глагол.",
     audioFocus: "«gonna» — это беглое разговорное сокращение от «going to».",
     tokens: ["We", "are", "gonna", "discuss", "this", "problem", "tomorrow", "will", "going", "to"]
+  },
+
+  // 2. Числа и цены на слух
+  {
+    id: "list_9",
+    en: "Your room number is forty-two on the fourth floor.",
+    ru: "Номер вашей комнаты — 42 на четвёртом этаже.",
+    hint: "Число forty (без буквы u) и порядковое fourth.",
+    audioFocus: "Чёткое ударение на первый слог: FORty (не путать с fourTEEN).",
+    tokens: ["Your", "room", "number", "is", "forty-two", "on", "the", "fourth", "floor", "fourteen", "in", "at"]
+  },
+  {
+    id: "list_10",
+    en: "It costs fifteen dollars and fifty cents.",
+    ru: "Это стоит пятнадцать долларов и пятьдесят центов.",
+    hint: "Классическая пара-ловушка: fifTEEN (15) и FIFty (50).",
+    audioFocus: "В fifTEEN ударение на длинный конец -TEEN, а в FIFty — на первый слог.",
+    tokens: ["It", "costs", "fifteen", "dollars", "and", "fifty", "cents", "cost", "fifty-five", "cents"]
+  },
+  {
+    id: "list_11",
+    en: "The train leaves at seven thirteen in the morning.",
+    ru: "Поезд отправляется в семь тринадцать утра.",
+    hint: "Время: 7:13 (thirteen, ударение на -TEEN).",
+    audioFocus: "«seven thirteen» звучит с акцентом на окончании «-TEEN» у тринадцати.",
+    tokens: ["The", "train", "leaves", "at", "seven", "thirteen", "in", "the", "morning", "thirty", "on", "depart"]
+  },
+  {
+    id: "list_12",
+    en: "There are about thirty people in the office.",
+    ru: "В офисе около тридцати человек.",
+    hint: "Число 30: THIRty (ударение на начало).",
+    audioFocus: "Глухой звук «th» в начале и быстрый звук «-ty» на конце.",
+    tokens: ["There", "are", "about", "thirty", "people", "in", "the", "office", "thirteen", "is", "person"]
+  },
+  {
+    id: "list_13",
+    en: "Can you lend me eighteen dollars until Friday?",
+    ru: "Можешь одолжить мне восемнадцать долларов до пятницы?",
+    hint: "Число 18: eighTEEN (ударение на -teen).",
+    audioFocus: "Не спутайте eighteen (18) и eighty (80).",
+    tokens: ["Can", "you", "lend", "me", "eighteen", "dollars", "until", "Friday", "eighty", "borrow", "to"]
+  },
+  {
+    id: "list_14",
+    en: "I have eighty-five unread emails in my inbox.",
+    ru: "У меня 85 непрочитанных писем во входящих.",
+    hint: "Составное число: eighty-five (через дефис).",
+    audioFocus: "Слитная связка eighty-five с ударением на EIGHty.",
+    tokens: ["I", "have", "eighty-five", "unread", "emails", "in", "my", "inbox", "eighteen", "has", "of"]
+  },
+
+  // 3. Золотые разговорные реакции (Мария Батхан)
+  {
+    id: "list_15",
+    en: "That sounds good to me.",
+    ru: "Мне это подходит / Звучит отлично.",
+    hint: "Естественный ответ согласия вместо шаблонного 'OK'.",
+    audioFocus: "Звук s на конце «sounds» сливается с «good».",
+    tokens: ["That", "sounds", "good", "to", "me", "sound", "for", "well", "it"]
+  },
+  {
+    id: "list_16",
+    en: "That makes a lot of sense.",
+    ru: "Это очень логично / В этом много смысла.",
+    hint: "Связка a lot of + sense.",
+    audioFocus: "«makes a lot of» звучит как одно слитное слово «makes-a-lot-of».",
+    tokens: ["That", "makes", "a", "lot", "of", "sense", "make", "the", "meaning", "in"]
+  },
+  {
+    id: "list_17",
+    en: "No worries at all, I will help you.",
+    ru: "Вообще без проблем, я помогу тебе.",
+    hint: "Разговорный эквивалент 'You are welcome'.",
+    audioFocus: "Связка «at all» произносится слитным звуком [эт-оол].",
+    tokens: ["No", "worries", "at", "all", "I", "will", "help", "you", "not", "problem", "am"]
+  },
+  {
+    id: "list_18",
+    en: "That is a very good point.",
+    ru: "Это очень дельное замечание.",
+    hint: "Признание правоты собеседника на созвоне или в беседе.",
+    audioFocus: "Буква d в «good» мягко переходит в звук p слова «point».",
+    tokens: ["That", "is", "a", "very", "good", "point", "the", "an", "idea"]
+  },
+  {
+    id: "list_19",
+    en: "I couldn't agree more with you.",
+    ru: "Я полностью с вами согласен (не мог бы согласиться больше).",
+    hint: "Высшая степень согласия: couldn't agree more.",
+    audioFocus: "«couldn't agree» произносится без паузы: «couldn-ta-gree».",
+    tokens: ["I", "couldn't", "agree", "more", "with", "you", "could", "to", "not", "am"]
+  },
+  {
+    id: "list_20",
+    en: "It goes without saying that we must hurry.",
+    ru: "Само собой разумеется, что мы должны поторопиться.",
+    hint: "Идиома: It goes without saying.",
+    audioFocus: "«without saying» произносится плавно, без акцентирования предлога.",
+    tokens: ["It", "goes", "without", "saying", "that", "we", "must", "hurry", "go", "say", "should"]
+  },
+  {
+    id: "list_21",
+    en: "It depends on the weather tomorrow.",
+    ru: "Это зависит от завтрашней погоды.",
+    hint: "Глагол depend требует предлог on (не of!).",
+    audioFocus: "Связка «depends on» сливается в [ди-пэндз-он].",
+    tokens: ["It", "depends", "on", "the", "weather", "tomorrow", "of", "depend", "from"]
+  },
+  {
+    id: "list_22",
+    en: "How come you are already here?",
+    ru: "Как так вышло, что ты уже здесь?",
+    hint: "How come = почему / как так вышло (прямой порядок слов!).",
+    audioFocus: "После «How come» порядок слов утвердительный: «you are», а не «are you».",
+    tokens: ["How", "come", "you", "are", "already", "here", "why", "did", "come", "were"]
+  },
+  {
+    id: "list_23",
+    en: "Never mind, it doesn't matter anymore.",
+    ru: "Не бери в голову, это больше не имеет значения.",
+    hint: "Never mind = забей / неважно.",
+    audioFocus: "«doesn't matter» — t в doesn't проглатывается перед m.",
+    tokens: ["Never", "mind", "it", "doesn't", "matter", "anymore", "don't", "is", "not"]
+  },
+  {
+    id: "list_24",
+    en: "I see your point, but let me explain.",
+    ru: "Я понимаю вашу точку зрения, но позвольте объяснить.",
+    hint: "Вежливое несогласие: I see your point, but...",
+    audioFocus: "«let me» в беглой речи звучит как «lem-me».",
+    tokens: ["I", "see", "your", "point", "but", "let", "me", "explain", "understand", "to", "my"]
+  },
+  {
+    id: "list_25",
+    en: "Let's call it a day and go home.",
+    ru: "Давайте закругляться на сегодня и пойдём по домам.",
+    hint: "Идиома: call it a day = закончить работу на сегодня.",
+    audioFocus: "«call it a» звучит как одно слово [кол-ит-э].",
+    tokens: ["Let's", "call", "it", "a", "day", "and", "go", "home", "finish", "the", "to"]
+  },
+
+  // 4. IT, созвоны и рабочие процессы
+  {
+    id: "list_26",
+    en: "You are on mute, we cannot hear you.",
+    ru: "Ты на мьюте (с выключенным микрофоном), мы тебя не слышим.",
+    hint: "Устойчивое IT-выражение: on mute.",
+    audioFocus: "«cannot hear» — ударение на hear.",
+    tokens: ["You", "are", "on", "mute", "we", "cannot", "hear", "you", "in", "can't", "listen"]
+  },
+  {
+    id: "list_27",
+    en: "Could you please share your screen with us?",
+    ru: "Не могли бы вы расшарить свой экран с нами?",
+    hint: "Вежливая просьба: Could you please + глагол.",
+    audioFocus: "«Could you» на слух звучит мягко: [ку-джу].",
+    tokens: ["Could", "you", "please", "share", "your", "screen", "with", "us", "can", "show", "the"]
+  },
+  {
+    id: "list_28",
+    en: "I will push this bug fix to production tonight.",
+    ru: "Я залью этот фикс бага на прод сегодня вечером.",
+    hint: "Will + 1-я форма для спонтанного решения.",
+    audioFocus: "«will push» часто сокращается в «I'll push».",
+    tokens: ["I", "will", "push", "this", "bug", "fix", "to", "production", "tonight", "pushed", "the", "in"]
+  },
+  {
+    id: "list_29",
+    en: "Let's test this feature before we deploy.",
+    ru: "Давайте протестируем эту фичу перед деплоем.",
+    hint: "Let's + глагол без частицы to.",
+    audioFocus: "«test this» — глухой t в конце test сливается с th в this.",
+    tokens: ["Let's", "test", "this", "feature", "before", "we", "deploy", "to", "will", "the"]
+  },
+  {
+    id: "list_30",
+    en: "Do you have a minute to talk about the task?",
+    ru: "У тебя есть минутка поговорить о задаче?",
+    hint: "Разговорный вопрос о времени: have a minute to talk.",
+    audioFocus: "«have a» сливается в [хэв-э].",
+    tokens: ["Do", "you", "have", "a", "minute", "to", "talk", "about", "the", "task", "has", "an", "for"]
+  },
+
+  // 5. Путешествия, кафе и город
+  {
+    id: "list_31",
+    en: "Could I have the check, please?",
+    ru: "Можно мне счёт, пожалуйста?",
+    hint: "The check (в США) или the bill (в Британии).",
+    audioFocus: "«Could I» сливается в [куд-ай].",
+    tokens: ["Could", "I", "have", "the", "check", "please", "can", "a", "bill", "give"]
+  },
+  {
+    id: "list_32",
+    en: "How do I get to the nearest subway station?",
+    ru: "Как мне добраться до ближайшей станции метро?",
+    hint: "get to = добраться до места.",
+    audioFocus: "«How do I» звучит бегло как [хау-ду-ай].",
+    tokens: ["How", "do", "I", "get", "to", "the", "nearest", "subway", "station", "go", "a", "at"]
+  },
+  {
+    id: "list_33",
+    en: "Keep the change, and thank you for your help.",
+    ru: "Сдачи не надо (оставьте сдачу себе), и спасибо за помощь.",
+    hint: "Идиома в такси и кафе: Keep the change.",
+    audioFocus: "«Keep the change» произносится слитно и доброжелательно.",
+    tokens: ["Keep", "the", "change", "and", "thank", "you", "for", "your", "help", "a", "to", "leave"]
+  },
+  {
+    id: "list_34",
+    en: "I have a reservation under the name Ivanov.",
+    ru: "У меня бронь на имя Иванов.",
+    hint: "under the name = на фамилию / имя.",
+    audioFocus: "«have a» снова звучит как одно целое [хэв-э].",
+    tokens: ["I", "have", "a", "reservation", "under", "the", "name", "Ivanov", "has", "on", "by"]
+  },
+  {
+    id: "list_35",
+    en: "What time does the breakfast start in the morning?",
+    ru: "Во сколько начинается завтрак утром?",
+    hint: "does + breakfast + start (глагол в 1-й форме).",
+    audioFocus: "«What time does» звучит слитным ритмическим блоком.",
+    tokens: ["What", "time", "does", "the", "breakfast", "start", "in", "the", "morning", "is", "starts", "at"]
+  },
+
+  // 6. Сложные грамматические структуры на слух
+  {
+    id: "list_36",
+    en: "I have been waiting for you for forty minutes.",
+    ru: "Я жду тебя уже сорок минут.",
+    hint: "have been + -ing для действия, которое длится до сих пор.",
+    audioFocus: "«been waiting for» звучит ритмично, слитная связка предлога for.",
+    tokens: ["I", "have", "been", "waiting", "for", "you", "for", "forty", "minutes", "am", "fourteen", "waited"]
+  },
+  {
+    id: "list_37",
+    en: "You should have told me about this yesterday.",
+    ru: "Тебе следовало сказать мне об этом вчера.",
+    hint: "should have + 3-я форма = сожаление о прошлом.",
+    audioFocus: "«should have» в беглой речи превращается в «should've» [шуд-эв].",
+    tokens: ["You", "should", "have", "told", "me", "about", "this", "yesterday", "tell", "had", "must"]
+  },
+  {
+    id: "list_38",
+    en: "I used to drink green tea, but now I prefer coffee.",
+    ru: "Раньше я пил зелёный чай, но теперь предпочитаю кофе.",
+    hint: "used to = прошлая привычка, которой больше нет.",
+    audioFocus: "«used to» произносится со звуком s: [йууст-ту].",
+    tokens: ["I", "used", "to", "drink", "green", "tea", "but", "now", "I", "prefer", "coffee", "use", "the", "drank"]
+  },
+  {
+    id: "list_39",
+    en: "There is something wrong with my car.",
+    ru: "С моей машиной что-то не так.",
+    hint: "something wrong = что-то не в порядке.",
+    audioFocus: "«There is» сокращается в быстрое «There's».",
+    tokens: ["There", "is", "something", "wrong", "with", "my", "car", "has", "anything", "in"]
+  },
+  {
+    id: "list_40",
+    en: "Would you mind opening the door for me?",
+    ru: "Вы не возражаете открыть дверь для меня?",
+    hint: "Would you mind + глагол с окончанием -ing.",
+    audioFocus: "«Would you mind» произносится очень слитно [ву-джу майнд].",
+    tokens: ["Would", "you", "mind", "opening", "the", "door", "for", "me", "open", "to", "do"]
+  },
+
+  // 7. Ежедневные связки и беглая речь
+  {
+    id: "list_41",
+    en: "To be honest, I really like this city.",
+    ru: "Честно говоря, мне правда нравится этот город.",
+    hint: "Вводная фраза: To be honest.",
+    audioFocus: "Буква h в слове honest немая, произносится [онэст].",
+    tokens: ["To", "be", "honest", "I", "really", "like", "this", "city", "am", "the", "honestly"]
+  },
+  {
+    id: "list_42",
+    en: "By the way, did you see my keys anywhere?",
+    ru: "Кстати, ты нигде не видел мои ключи?",
+    hint: "By the way = кстати / между прочим.",
+    audioFocus: "«did you see» сливается в [ди-джу си].",
+    tokens: ["By", "the", "way", "did", "you", "see", "my", "keys", "anywhere", "saw", "do", "in"]
+  },
+  {
+    id: "list_43",
+    en: "First of all, let us check the facts.",
+    ru: "Прежде всего, давайте проверим факты.",
+    hint: "First of all = во-первых / прежде всего.",
+    audioFocus: "«First of all» произносится как единое слово [фёрст-ов-оол].",
+    tokens: ["First", "of", "all", "let", "us", "check", "the", "facts", "at", "to", "firstly"]
+  },
+  {
+    id: "list_44",
+    en: "Don't get me wrong, but we have to leave.",
+    ru: "Не пойми меня неправильно, но мы должны уходить.",
+    hint: "Идиома: Don't get me wrong.",
+    audioFocus: "«have to» в речи произносится с глухим звуком f: [хэф-ту].",
+    tokens: ["Don't", "get", "me", "wrong", "but", "we", "have", "to", "leave", "must", "not", "go"]
+  },
+  {
+    id: "list_45",
+    en: "It is not a big deal at all.",
+    ru: "В этом нет ничего страшного / Пустяки.",
+    hint: "It's no big deal = пустяки / не беда.",
+    audioFocus: "«not a big deal» произносится легко и быстро.",
+    tokens: ["It", "is", "not", "a", "big", "deal", "at", "all", "no", "the", "problem"]
+  },
+  {
+    id: "list_46",
+    en: "Take your time, there is no rush.",
+    ru: "Не торопись, спешки никакой нет.",
+    hint: "Take your time = не спеши.",
+    audioFocus: "«there is no» сливается в [дэриз ноу].",
+    tokens: ["Take", "your", "time", "there", "is", "no", "rush", "not", "have", "a"]
+  },
+  {
+    id: "list_47",
+    en: "I appreciate your help very much.",
+    ru: "Я очень ценю вашу помощь.",
+    hint: "Вежливая благодарность выше обычного 'Thank you'.",
+    audioFocus: "«appreciate» произносится мягко: [э-при-ши-эйт].",
+    tokens: ["I", "appreciate", "your", "help", "very", "much", "thank", "for", "am", "you"]
+  },
+  {
+    id: "list_48",
+    en: "I have no idea what you mean.",
+    ru: "Понятия не имею, что ты имеешь в виду.",
+    hint: "have no idea = без понятия.",
+    audioFocus: "«what you mean» сливается в [уот-чу миин].",
+    tokens: ["I", "have", "no", "idea", "what", "you", "mean", "don't", "any", "that", "do"]
+  },
+  {
+    id: "list_49",
+    en: "Can you give me a hand with this box?",
+    ru: "Можешь помочь мне с этой коробкой?",
+    hint: "give a hand = протянуть руку помощи.",
+    audioFocus: "«give me a hand» звучит как [гив-ми-э хэнд].",
+    tokens: ["Can", "you", "give", "me", "a", "hand", "with", "this", "box", "help", "the", "in"]
+  },
+  {
+    id: "list_50",
+    en: "I would rather stay at home tonight.",
+    ru: "Я бы лучше остался дома сегодня вечером.",
+    hint: "would rather + глагол без to = предпочел бы.",
+    audioFocus: "«would rather» звучит мягко, без буквы to.",
+    tokens: ["I", "would", "rather", "stay", "at", "home", "tonight", "to", "prefer", "in"]
+  },
+  {
+    id: "list_51",
+    en: "Keep in touch and take care of yourself.",
+    ru: "Оставайся на связи и береги себя.",
+    hint: "Теплое дружеское прощание: Keep in touch.",
+    audioFocus: "«take care of» сливается в [тэйк кэр ов].",
+    tokens: ["Keep", "in", "touch", "and", "take", "care", "of", "yourself", "on", "you", "be"]
+  },
+  {
+    id: "list_52",
+    en: "As far as I know, the meeting is cancelled.",
+    ru: "Насколько я знаю, встреча отменена.",
+    hint: "Связка: As far as I know.",
+    audioFocus: "«As far as» звучит быстро: [эз фар эз].",
+    tokens: ["As", "far", "as", "I", "know", "the", "meeting", "is", "cancelled", "so", "was", "that"]
   }
 ];
+
+
+/* --- js/data/numbers-data.js --- */
+// База и логика английских чисел для тренировки на слух и произношения (1–100)
+// Включает фонетику, разбор ловушек -TEEN vs -TY и генератор любых чисел
+
+const NUMBER_WORDS_1_TO_20 = {
+  1: { word: "one", phonetic: "[уан]" },
+  2: { word: "two", phonetic: "[туу]" },
+  3: { word: "three", phonetic: "[срии] — межзубный звук th" },
+  4: { word: "four", phonetic: "[фоор]" },
+  5: { word: "five", phonetic: "[файв]" },
+  6: { word: "six", phonetic: "[сикс]" },
+  7: { word: "seven", phonetic: "[сэвэн]" },
+  8: { word: "eight", phonetic: "[эйт]" },
+  9: { word: "nine", phonetic: "[найн]" },
+  10: { word: "ten", phonetic: "[тэн]" },
+  11: { word: "eleven", phonetic: "[и-ЛЭВ-эн]" },
+  12: { word: "twelve", phonetic: "[туэлв] — сложный звук tw+lv" },
+  13: { word: "thirteen", phonetic: "[сёр-ТИИН] — ударение на -TEEN!" },
+  14: { word: "fourteen", phonetic: "[фор-ТИИН] — ударение на -TEEN!" },
+  15: { word: "fifteen", phonetic: "[фиф-ТИИН] — корень fif-, ударение на -TEEN!" },
+  16: { word: "sixteen", phonetic: "[сикс-ТИИН] — ударение на -TEEN!" },
+  17: { word: "seventeen", phonetic: "[сэвэн-ТИИН] — ударение на -TEEN!" },
+  18: { word: "eighteen", phonetic: "[эй-ТИИН] — ударение на -TEEN!" },
+  19: { word: "nineteen", phonetic: "[найн-ТИИН] — ударение на -TEEN!" },
+  20: { word: "twenty", phonetic: "[ТУЭН-ти]" }
+};
+
+const TENS_WORDS = {
+  20: { word: "twenty", phonetic: "[ТУЭН-ти]" },
+  30: { word: "thirty", phonetic: "[СЁР-ти]" },
+  40: { word: "forty", phonetic: "[ФОР-ти] — пишется БЕЗ буквы 'u'!" },
+  50: { word: "fifty", phonetic: "[ФИФ-ти]" },
+  60: { word: "sixty", phonetic: "[СИКС-ти]" },
+  70: { word: "seventy", phonetic: "[СЭВЭН-ти]" },
+  80: { word: "eighty", phonetic: "[ЭЙ-ти]" },
+  90: { word: "ninety", phonetic: "[НАЙН-ти]" },
+  100: { word: "one hundred", phonetic: "[уан ХАН-дрэд]" }
+};
+
+const TEEN_TY_PAIRS = [
+  {
+    teenNum: 13,
+    teenWord: "thirteen",
+    teenPhonetic: "[сёр-ТИИН]",
+    teenStress: "thir-TEEN",
+    tyNum: 30,
+    tyWord: "thirty",
+    tyPhonetic: "[СЁР-ти]",
+    tyStress: "THIR-ty",
+    tip: "В 13 (thirTEEN) ударение на длинный конец -TEEN. В 30 (THIRty) ударение строго на начало THIR-, а окончание быстрое!"
+  },
+  {
+    teenNum: 14,
+    teenWord: "fourteen",
+    teenPhonetic: "[фор-ТИИН]",
+    teenStress: "four-TEEN",
+    tyNum: 40,
+    tyWord: "forty",
+    tyPhonetic: "[ФОР-ти]",
+    tyStress: "FOR-ty",
+    tip: "В 14 (fourTEEN) акцент на -TEEN. В 40 (FORty) ударение на первый слог. Обратите внимание: forty пишется БЕЗ буквы 'u'!"
+  },
+  {
+    teenNum: 15,
+    teenWord: "fifteen",
+    teenPhonetic: "[фиф-ТИИН]",
+    teenStress: "fif-TEEN",
+    tyNum: 50,
+    tyWord: "fifty",
+    tyPhonetic: "[ФИФ-ти]",
+    tyStress: "FIF-ty",
+    tip: "Корень fif- (не fiveteen). В 15 ударение на -TEEN, в 50 — на первый слог FIF-."
+  },
+  {
+    teenNum: 16,
+    teenWord: "sixteen",
+    teenPhonetic: "[сикс-ТИИН]",
+    teenStress: "six-TEEN",
+    tyNum: 60,
+    tyWord: "sixty",
+    tyPhonetic: "[СИКС-ти]",
+    tyStress: "SIX-ty",
+    tip: "sixTEEN (16) — громкий звонкий -TEEN. SIXty (60) — ударение в начале, окончание короткое."
+  },
+  {
+    teenNum: 17,
+    teenWord: "seventeen",
+    teenPhonetic: "[сэвэн-ТИИН]",
+    teenStress: "seven-TEEN",
+    tyNum: 70,
+    tyWord: "seventy",
+    tyPhonetic: "[СЭВЭН-ти]",
+    tyStress: "SEVEN-ty",
+    tip: "sevenTEEN (17) — акцент на -TEEN. SEVENty (70) — ударение строго на первый слог."
+  },
+  {
+    teenNum: 18,
+    teenWord: "eighteen",
+    teenPhonetic: "[эй-ТИИН]",
+    teenStress: "eigh-TEEN",
+    tyNum: 80,
+    tyWord: "eighty",
+    tyPhonetic: "[ЭЙ-ти]",
+    tyStress: "EIGH-ty",
+    tip: "eighTEEN (18) vs EIGHty (80). В 18 тянем -TEEN, в 80 обрываем на коротком -ty."
+  },
+  {
+    teenNum: 19,
+    teenWord: "nineteen",
+    teenPhonetic: "[найн-ТИИН]",
+    teenStress: "nine-TEEN",
+    tyNum: 90,
+    tyWord: "ninety",
+    tyPhonetic: "[НАЙН-ти]",
+    tyStress: "NINE-ty",
+    tip: "nineTEEN (19) — акцент на конце. NINEty (90) — акцент в начале."
+  }
+];
+
+// Преобразует любое число от 1 до 100 в английский текст
+function numberToEnglish(num) {
+  const n = parseInt(num, 10);
+  if (isNaN(n) || n < 1 || n > 100) return "";
+
+  if (n <= 20) {
+    return NUMBER_WORDS_1_TO_20[n].word;
+  }
+  if (n === 100) {
+    return "one hundred";
+  }
+
+  const tens = Math.floor(n / 10) * 10;
+  const units = n % 10;
+
+  if (units === 0) {
+    return TENS_WORDS[tens].word;
+  }
+
+  return `${TENS_WORDS[tens].word}-${NUMBER_WORDS_1_TO_20[units].word}`;
+}
+
+// Преобразует английский текст числа (или цифру) обратно в число 1..100
+function parseSpokenNumber(input) {
+  if (!input) return null;
+  const raw = input.toLowerCase().replace(/[^a-z0-9 -]/g, "").trim();
+
+  // Если пользователь уже ввёл цифрами
+  const asDigit = parseInt(raw, 10);
+  if (!isNaN(asDigit) && asDigit >= 1 && asDigit <= 100) {
+    return asDigit;
+  }
+
+  // Сверяем со всеми числами от 1 до 100
+  for (let i = 1; i <= 100; i++) {
+    const en = numberToEnglish(i);
+    const enNoHyphen = en.replace("-", " ");
+    const rawNoHyphen = raw.replace("-", " ");
+    if (rawNoHyphen === enNoHyphen || raw === en) {
+      return i;
+    }
+  }
+
+  return null;
+}
 
 
 /* --- js/data/sprint-tasks.js --- */
@@ -2376,6 +2907,7 @@ const ROLEPLAY_SCENARIOS = [
 // Начальная база интерактивных карточек уровня B1
 // Включает как бытовой/повседневный английский, так и специальную лексику Tech Art & GameDev
 // С понятными русскими фонетическими подсказками Драгункина (где ударение, немые буквы)
+
 
 
 const PHRASES_50_CARDS = (typeof CONVERSATIONAL_50_PHRASES !== "undefined" ? CONVERSATIONAL_50_PHRASES : []).map((p) => ({
@@ -3434,7 +3966,6 @@ class SpeechEngine {
     this.femaleVoices = [];
     this.defaultVoice = null;
     this.isListening = false;
-    this.audioStream = null;
 
     this.initVoices();
     this.initRecognition();
@@ -3621,23 +4152,7 @@ class SpeechEngine {
     return rec;
   }
 
-  async ensureMicPermission() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        // ВАЖНО: На Android микрофон блокируется, если удерживать MediaStream!
-        // Освобождаем микрофон сразу после получения разрешения:
-        stream.getTracks().forEach((track) => track.stop());
-        return true;
-      } catch (e) {
-        console.warn("getUserMedia permission error:", e);
-        return false;
-      }
-    }
-    return true;
-  }
-
-  async startListening(onResult, onError = null, onEnd = null) {
+  startListening(onResult, onError = null, onEnd = null, onInterim = null, onStart = null) {
     const SpeechRecognition = this.getSpeechRecognitionClass();
     if (!SpeechRecognition) {
       if (onError) onError("Распознавание речи не поддерживается браузером. Используйте Chrome или Edge.");
@@ -3646,13 +4161,6 @@ class SpeechEngine {
 
     if (this.isListening) {
       this.stopListening();
-      return;
-    }
-
-    const permitted = await this.ensureMicPermission();
-    if (!permitted) {
-      if (onError) onError("Нет доступа к микрофону. Разрешите доступ в настройках браузера.");
-      return;
     }
 
     const rec = this.createRecognition();
@@ -3664,48 +4172,56 @@ class SpeechEngine {
     this.recognition = rec;
     this.isListening = true;
 
+    let recognizedTranscript = "";
     let finalTranscript = "";
-    let lastInterim = "";
-    let hasDeliveredResult = false;
+
+    rec.onstart = () => {
+      if (onStart) onStart();
+    };
 
     rec.onresult = (event) => {
       let interim = "";
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        const res = event.results[i];
-        if (res.isFinal) {
-          finalTranscript += res[0].transcript;
-        } else {
-          interim += res[0].transcript;
+      let currentFinal = "";
+
+      for (let i = 0; i < event.results.length; ++i) {
+        const item = event.results[i];
+        if (item && item[0]) {
+          if (item.isFinal) {
+            currentFinal += item[0].transcript + " ";
+          } else {
+            interim += item[0].transcript + " ";
+          }
         }
       }
-      if (interim) {
-        lastInterim = interim;
+
+      if (currentFinal) {
+        finalTranscript = currentFinal.trim();
       }
 
-      const text = (finalTranscript || lastInterim).trim();
-      if (finalTranscript.trim() && !hasDeliveredResult) {
-        hasDeliveredResult = true;
-        this.isListening = false;
-        try {
-          rec.stop();
-        } catch (e) {}
-        if (onResult) onResult(text);
+      const fullText = (finalTranscript ? finalTranscript + " " + interim : interim).trim();
+      if (fullText) {
+        recognizedTranscript = fullText;
+        if (onInterim) {
+          onInterim(fullText);
+        }
       }
     };
 
     rec.onerror = (err) => {
       this.isListening = false;
-      let errorMsg = "Ошибка микрофона";
       const code = err.error || "";
+      let errorMsg = "Ошибка микрофона";
 
       if (code === "no-speech") {
-        errorMsg = "Речь не обнаружена. Попробуйте сказать громче и ближе к микрофону.";
+        errorMsg = "Речь не обнаружена. Подождите, пока индикатор загорится красным, и говорите ближе к микрофону.";
       } else if (code === "not-allowed" || code === "service-not-allowed") {
-        errorMsg = "Доступ к микрофону запрещен. Разрешите микрофон в настройках.";
+        errorMsg = "Доступ к микрофону запрещен в настройках браузера.";
       } else if (code === "network") {
-        errorMsg = "Ошибка сети сервиса распознавания. Если вы оффлайн, скачайте английский языковой пакет в настройках телефона (Настройки -> Язык и ввод -> Голосовой ввод Google -> Офлайн-распознавание).";
+        errorMsg = "Ошибка сети сервиса распознавания. В офлайн-режиме Android скачайте пакет English в настройках.";
       } else if (code === "audio-capture") {
         errorMsg = "Микрофон занят другим приложением или недоступен.";
+      } else if (code === "aborted") {
+        return;
       } else if (code) {
         errorMsg = `Ошибка распознавания (${code})`;
       }
@@ -3715,10 +4231,9 @@ class SpeechEngine {
 
     rec.onend = () => {
       this.isListening = false;
-      const finalText = (finalTranscript || lastInterim).trim();
-      if (!hasDeliveredResult && finalText) {
-        hasDeliveredResult = true;
-        if (onResult) onResult(finalText);
+      const textToDeliver = (finalTranscript || recognizedTranscript).trim();
+      if (textToDeliver) {
+        if (onResult) onResult(textToDeliver);
       }
       if (onEnd) onEnd();
     };
@@ -3739,6 +4254,53 @@ class SpeechEngine {
       this.isListening = false;
     }
   }
+}
+
+// Нормализатор разговорной речи (раскрывает беглые английские сокращения: I'd -> I would, don't -> do not)
+function normalizeSpeechTranscript(text) {
+  if (!text) return "";
+  let clean = text.toLowerCase().trim();
+
+  const contractions = [
+    [/\bi'd\b/g, "i would"],
+    [/\byou'd\b/g, "you would"],
+    [/\bhe'd\b/g, "he would"],
+    [/\bshe'd\b/g, "she would"],
+    [/\bwe'd\b/g, "we would"],
+    [/\bthey'd\b/g, "they would"],
+    [/\bi'll\b/g, "i will"],
+    [/\byou'll\b/g, "you will"],
+    [/\bhe'll\b/g, "he will"],
+    [/\bshe'll\b/g, "she will"],
+    [/\bwe'll\b/g, "we will"],
+    [/\bthey'll\b/g, "they will"],
+    [/\bi'm\b/g, "i am"],
+    [/\byou're\b/g, "you are"],
+    [/\bwe're\b/g, "we are"],
+    [/\bthey're\b/g, "they are"],
+    [/\bdon't\b/g, "do not"],
+    [/\bdoesn't\b/g, "does not"],
+    [/\bdidn't\b/g, "did not"],
+    [/\bcan't\b/g, "cannot"],
+    [/\bwon't\b/g, "will not"],
+    [/\bisn't\b/g, "is not"],
+    [/\baren't\b/g, "are not"],
+    [/\bwasn't\b/g, "was not"],
+    [/\bweren't\b/g, "were not"],
+    [/\bhaven't\b/g, "have not"],
+    [/\bhasn't\b/g, "has not"],
+    [/\bhadn't\b/g, "had not"],
+    [/\bit's\b/g, "it is"],
+    [/\bthat's\b/g, "that is"],
+    [/\bwhat's\b/g, "what is"],
+    [/\bthere's\b/g, "there is"]
+  ];
+
+  for (const [pattern, replacement] of contractions) {
+    clean = clean.replace(pattern, replacement);
+  }
+
+  return clean;
 }
 
 const speech = new SpeechEngine();
@@ -4336,6 +4898,7 @@ const llmClient = new LocalLLMClient();
 // Сервис управления карточками слов, интервальным повторением и анализом произношения
 
 
+
 class FlashcardsService {
   constructor() {
     this.storageKey = "my_english_flashcards";
@@ -4633,6 +5196,7 @@ const flashcardsService = new FlashcardsService();
 // Модуль интерактивного словаря с мгновенным переводом слов по наведению / клику
 // Содержит локальный кеш частых B1 и Tech Art / VFX терминов + онлайн-перевод через MyMemory API
 // Имеет компактный полупрозрачный дизайн, который никогда не перекрывает текст строки
+
 
 
 
@@ -5177,6 +5741,7 @@ const dictionary = new DictionaryService();
 
 
 
+
 class BuilderMode {
   constructor(containerEl) {
     this.container = containerEl;
@@ -5186,7 +5751,8 @@ class BuilderMode {
   }
 
   init() {
-    this.loadTask(this.currentIndex || 0);
+    const rand = Math.floor(Math.random() * BUILDER_TASKS.length);
+    this.loadTask(rand);
   }
 
   getCurrentTask() {
@@ -5213,7 +5779,10 @@ class BuilderMode {
     this.container.innerHTML = `
       <div class="mode-header">
         <div class="mode-badge">🧩 Конструктор речи</div>
-        <div class="task-counter">Задание ${this.currentIndex + 1} из ${BUILDER_TASKS.length}</div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="task-counter">Задание ${this.currentIndex + 1} из ${BUILDER_TASKS.length}</div>
+          <button class="btn-random-card" id="btn-builder-random" title="Случайное задание">🎲 Случайное</button>
+        </div>
       </div>
 
       <div class="task-card">
@@ -5238,14 +5807,32 @@ class BuilderMode {
 
         <div class="action-buttons">
           <button class="btn btn-mic" id="btn-builder-mic" title="Назовите предложение вслух">🎙️ Сказать вслух</button>
+          <button class="btn btn-secondary" id="btn-builder-prev">◀ Назад</button>
           <button class="btn btn-secondary" id="btn-builder-reset">Сбросить</button>
           <button class="btn btn-primary" id="btn-builder-check">Проверить скелет</button>
-          <button class="btn btn-next hidden" id="btn-builder-next">Следующее задание ➔</button>
+          <button class="btn btn-next" id="btn-builder-next">Далее ➔</button>
         </div>
       </div>
     `;
 
     // Привязываем статические события один раз на карточку
+    const randBtn = this.container.querySelector("#btn-builder-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        const rand = Math.floor(Math.random() * BUILDER_TASKS.length);
+        this.loadTask(rand);
+      });
+    }
+
+    const prevBtn = this.container.querySelector("#btn-builder-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.loadTask(this.currentIndex - 1);
+      });
+    }
+
     const micBtn = this.container.querySelector("#btn-builder-mic");
     if (micBtn) {
       micBtn.addEventListener("click", () => this.handleMicInput());
@@ -5282,14 +5869,20 @@ class BuilderMode {
     const task = this.getCurrentTask();
 
     micBtn.classList.add("mic-recording");
-    micBtn.innerHTML = `<span>🔴 Слушаю...</span>`;
+    micBtn.innerHTML = `<span>⏳ Подключение...</span>`;
+
+    if (feedbackEl) {
+      feedbackEl.innerHTML = `<div class="feedback-box" style="background: rgba(37,99,235,0.1); border: 1px dashed rgba(59,130,246,0.3);"><p>⏳ Включение микрофона... Говорите, когда загорится красный индикатор.</p></div>`;
+    }
 
     speech.startListening(
       (transcript) => {
         micBtn.classList.remove("mic-recording");
         micBtn.innerHTML = `<span>🎙️ Сказать вслух</span>`;
 
-        const words = transcript.replace(/[.,?!]/g, "").split(/\s+/).filter(Boolean);
+        const normalized = normalizeSpeechTranscript(transcript);
+        const words = normalized.replace(/[.,?!]/g, "").split(/\s+/).filter(Boolean);
+
         // Сверяем распознанные слова с банком
         this.selectedTokens = [];
         this.bankTokens = [...task.tokens];
@@ -5317,6 +5910,21 @@ class BuilderMode {
       () => {
         micBtn.classList.remove("mic-recording");
         micBtn.innerHTML = `<span>🎙️ Сказать вслух</span>`;
+      },
+      (interim) => {
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `
+            <div class="feedback-box" style="background: rgba(37,99,235,0.15); border: 1px solid rgba(59,130,246,0.4);">
+              <p>🎙️ <b>Слышу в реальном времени:</b> <i>«${interim}»</i>...</p>
+            </div>
+          `;
+        }
+      },
+      () => {
+        micBtn.innerHTML = `<span>🔴 Слушаю, говорите...</span>`;
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `<div class="feedback-box" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);"><p>🔴 <b>Микрофон активен!</b> Произнесите предложение на английском.</p></div>`;
+        }
       }
     );
   }
@@ -5389,7 +5997,10 @@ class BuilderMode {
     const checkBtn = this.container.querySelector("#btn-builder-check");
     const nextBtn = this.container.querySelector("#btn-builder-next");
     if (checkBtn) checkBtn.classList.remove("hidden");
-    if (nextBtn) nextBtn.classList.add("hidden");
+    if (nextBtn) {
+      nextBtn.classList.remove("btn-success-next");
+      nextBtn.innerHTML = "Далее ➔";
+    }
   }
 
   checkSolution() {
@@ -5437,8 +6048,10 @@ class BuilderMode {
         replayBtn.addEventListener("click", () => speech.speak(fullSentence));
       }
 
-      if (checkBtn) checkBtn.classList.add("hidden");
-      if (nextBtn) nextBtn.classList.remove("hidden");
+      if (nextBtn) {
+        nextBtn.classList.add("btn-success-next");
+        nextBtn.innerHTML = "✨ Следующее задание ➔";
+      }
     } else {
       sound.playError();
       state.registerError();
@@ -5478,6 +6091,7 @@ class BuilderMode {
 
 
 
+
 class BugHunterMode {
   constructor(containerEl) {
     this.container = containerEl;
@@ -5487,7 +6101,9 @@ class BugHunterMode {
   }
 
   init() {
-    this.loadTask(0);
+    const list = this.getFilteredTasks();
+    const rand = list.length ? Math.floor(Math.random() * list.length) : 0;
+    this.loadTask(rand);
   }
 
   getFilteredTasks() {
@@ -5524,7 +6140,10 @@ class BugHunterMode {
           <button class="filter-btn ${this.filterLevel === "intermediate" ? "active" : ""}" data-level="intermediate">Средний</button>
           <button class="filter-btn ${this.filterLevel === "tricky" ? "active" : ""}" data-level="tricky">Хитрые ловушки</button>
         </div>
-        <div class="task-counter">${this.currentIndex + 1} из ${list.length}</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="task-counter">${this.currentIndex + 1} из ${list.length}</div>
+          <button class="btn-random-card" id="btn-hunter-random" title="Случайная фраза">🎲</button>
+        </div>
       </div>
 
       <div class="task-card">
@@ -5545,8 +6164,11 @@ class BugHunterMode {
         <div class="feedback-area" id="hunter-feedback"></div>
 
         <div class="action-buttons">
+          <button class="btn btn-secondary" id="btn-hunter-prev">◀ Назад</button>
           <button class="btn btn-secondary" id="btn-no-error" ${this.answered ? "disabled" : ""}>Здесь нет ошибки</button>
-          <button class="btn btn-next ${this.answered ? "" : "hidden"}" id="btn-hunter-next">Следующая фраза ➔</button>
+          <button class="btn btn-next ${this.answered ? "btn-success-next" : ""}" id="btn-hunter-next">
+            ${this.answered ? "✨ Следующая фраза ➔" : "Далее ➔"}
+          </button>
         </div>
       </div>
     `;
@@ -5581,6 +6203,26 @@ class BugHunterMode {
       noErrorBtn.addEventListener("click", () => {
         if (this.answered) return;
         this.handleNoErrorClick();
+      });
+    }
+
+    // Случайное задание
+    const randBtn = this.container.querySelector("#btn-hunter-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        const list = this.getFilteredTasks();
+        const rand = list.length ? Math.floor(Math.random() * list.length) : 0;
+        this.loadTask(rand);
+      });
+    }
+
+    // Кнопка "Назад"
+    const prevBtn = this.container.querySelector("#btn-hunter-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.loadTask(this.currentIndex - 1);
       });
     }
 
@@ -5687,6 +6329,7 @@ class BugHunterMode {
 
 
 
+
 class SwitchboardMode {
   constructor(containerEl) {
     this.container = containerEl;
@@ -5699,7 +6342,8 @@ class SwitchboardMode {
   }
 
   init() {
-    this.loadTask(0);
+    const rand = Math.floor(Math.random() * SWITCHBOARD_TASKS.length);
+    this.loadTask(rand);
   }
 
   getCurrentTask() {
@@ -5823,7 +6467,10 @@ class SwitchboardMode {
     this.container.innerHTML = `
       <div class="mode-header">
         <div class="mode-badge">⚡ Трансформер речи (Рубильники)</div>
-        <div class="task-counter">Задача ${this.currentIndex + 1} из ${SWITCHBOARD_TASKS.length}</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="task-counter">Задача ${this.currentIndex + 1} из ${SWITCHBOARD_TASKS.length}</div>
+          <button class="btn-random-card" id="btn-switch-random" title="Случайная задача">🎲</button>
+        </div>
       </div>
 
       <div class="task-card transformer-card">
@@ -5918,8 +6565,9 @@ class SwitchboardMode {
         <div class="feedback-area" id="switch-feedback"></div>
 
         <div class="action-buttons">
+          <button class="btn btn-secondary" id="btn-switch-prev">◀ Назад</button>
           <button class="btn btn-primary" id="btn-check-switches">Зафиксировать рубильники</button>
-          <button class="btn btn-next hidden" id="btn-next-switches">Следующая цель ➔</button>
+          <button class="btn btn-next" id="btn-next-switches">Далее ➔</button>
         </div>
       </div>
     `;
@@ -5938,6 +6586,23 @@ class SwitchboardMode {
         this.render();
       });
     });
+
+    const randBtn = this.container.querySelector("#btn-switch-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        const rand = Math.floor(Math.random() * SWITCHBOARD_TASKS.length);
+        this.loadTask(rand);
+      });
+    }
+
+    const prevBtn = this.container.querySelector("#btn-switch-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.loadTask(this.currentIndex - 1);
+      });
+    }
 
     const speakStageBtn = this.container.querySelector("#btn-speak-stage");
     if (speakStageBtn) {
@@ -5995,8 +6660,10 @@ class SwitchboardMode {
         </div>
       `;
 
-      if (checkBtn) checkBtn.classList.add("hidden");
-      if (nextBtn) nextBtn.classList.remove("hidden");
+      if (nextBtn) {
+        nextBtn.classList.add("btn-success-next");
+        nextBtn.innerHTML = "✨ Следующая цель ➔";
+      }
     } else {
       sound.playError();
       state.registerError();
@@ -6014,7 +6681,12 @@ class SwitchboardMode {
 
 /* --- js/modes/listening.js --- */
 // Режим «Аудио-диктант / Понимание на слух» (Listening Mode)
-// С мгновенной зеленой подсветкой правильно собранных слов и аудио-откликом
+// Включает:
+// 1. Аудио-диктант 52 разговорных фраз (B1)
+// 2. Тренажёр чисел и счёта на слух (1–100, ловушки -TEEN vs -TY)
+// 3. Поддержку микрофона, проверки произношения и свободную навигацию (◀, ▶, 🎲)
+
+
 
 
 
@@ -6023,16 +6695,35 @@ class SwitchboardMode {
 class ListeningMode {
   constructor(containerEl) {
     this.container = containerEl;
+    this.activeTab = "phrases"; // "phrases" | "numbers"
+
+    // Состояние фраз
     this.currentIndex = 0;
     this.selectedTokens = [];
     this.bankTokens = [];
     this.showRu = false;
     this.isCompleted = false;
+
+    // Состояние чисел
+    this.numberSubmode = "teen_ty"; // "teen_ty" | "one_to_twenty" | "random_100" | "cheatsheet"
+    this.pairIndex = 0;
+    this.currentTargetNumber = 14;
+    this.targetNumberWord = "fourteen";
+    this.numberFeedback = null;
+    this.isNumberAnswered = false;
   }
 
   init() {
-    this.loadTask(0);
+    // Стартовая фраза выбирается случайно!
+    const rand = Math.floor(Math.random() * LISTENING_TASKS.length);
+    this.pairIndex = Math.floor(Math.random() * TEEN_TY_PAIRS.length);
+    this.setupNewNumberTask();
+    this.loadTask(rand);
   }
+
+  // ========================================================
+  // 1. АУДИО-ДИКТАНТ РАЗГОВОРНЫХ ФРАЗ
+  // ========================================================
 
   getCurrentTask() {
     return LISTENING_TASKS[this.currentIndex];
@@ -6050,17 +6741,34 @@ class ListeningMode {
     // Автоматически озвучиваем фразу целиком при открытии карточки
     setTimeout(() => {
       speech.speak(task.en);
-    }, 400);
+    }, 350);
   }
 
   render() {
+    if (this.activeTab === "numbers") {
+      this.renderNumbersTrainer();
+      return;
+    }
+
     const task = this.getCurrentTask();
     if (!task) return;
 
     this.container.innerHTML = `
+      <div class="subtabs-bar" style="display: inline-flex; background: rgba(10, 16, 30, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px; padding: 5px; gap: 4px; margin-bottom: 20px;">
+        <button class="subtab-btn active" data-subtab="phrases" style="background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%); color: #ffffff; border: none; border-radius: 9999px; padding: 8px 20px; font-size: 13.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);">
+          <span>🎧</span> Разговорные фразы (${LISTENING_TASKS.length})
+        </button>
+        <button class="subtab-btn" data-subtab="numbers" style="background: transparent; color: #94a3b8; border: none; border-radius: 9999px; padding: 8px 20px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+          <span>🔢</span> Тренажёр чисел (1–100 & -teen / -ty)
+        </button>
+      </div>
+
       <div class="mode-header">
         <div class="mode-badge">🎧 Аудио-диктант (На слух)</div>
-        <div class="task-counter">Фраза ${this.currentIndex + 1} из ${LISTENING_TASKS.length}</div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="task-counter">Фраза ${this.currentIndex + 1} из ${LISTENING_TASKS.length}</div>
+          <button class="btn-random-card" id="btn-list-random" title="Случайная фраза">🎲 Случайная</button>
+        </div>
       </div>
 
       <div class="task-card listening-card">
@@ -6102,19 +6810,42 @@ class ListeningMode {
         <div class="feedback-area" id="listening-feedback"></div>
 
         <div class="action-buttons">
+          <button class="btn btn-secondary" id="btn-list-prev">◀ Назад</button>
           <button class="btn btn-secondary" id="btn-list-reset">Сбросить</button>
           <button class="btn btn-primary" id="btn-list-check">Проверить</button>
-          <button class="btn btn-next hidden" id="btn-list-next">Следующая фраза ➔</button>
+          <button class="btn btn-next ${this.isCompleted ? "btn-success-next" : ""}" id="btn-list-next">
+            ${this.isCompleted ? "✨ Следующая фраза ➔" : "Далее ➔"}
+          </button>
         </div>
       </div>
     `;
 
-    this.bindEvents();
+    this.bindPhraseEvents();
     this.updateChips();
   }
 
-  bindEvents() {
+  bindPhraseEvents() {
     const task = this.getCurrentTask();
+
+    // Переключение подвкладок
+    const subtabBtns = this.container.querySelectorAll(".subtab-btn");
+    subtabBtns.forEach((b) => {
+      b.addEventListener("click", () => {
+        sound.playClick();
+        this.activeTab = b.dataset.subtab;
+        this.render();
+      });
+    });
+
+    // Случайная фраза
+    const randBtn = this.container.querySelector("#btn-list-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        const rand = Math.floor(Math.random() * LISTENING_TASKS.length);
+        this.loadTask(rand);
+      });
+    }
 
     // Озвучка
     const playNorm = this.container.querySelector("#btn-play-normal");
@@ -6148,7 +6879,15 @@ class ListeningMode {
       });
     }
 
-    // Кнопка сброса
+    // Навигация
+    const prevBtn = this.container.querySelector("#btn-list-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.loadTask(this.currentIndex - 1);
+      });
+    }
+
     const resetBtn = this.container.querySelector("#btn-list-reset");
     if (resetBtn) {
       resetBtn.addEventListener("click", () => {
@@ -6157,13 +6896,11 @@ class ListeningMode {
       });
     }
 
-    // Проверка
     const checkBtn = this.container.querySelector("#btn-list-check");
     if (checkBtn) {
       checkBtn.addEventListener("click", () => this.checkSolution());
     }
 
-    // Следующее задание
     const nextBtn = this.container.querySelector("#btn-list-next");
     if (nextBtn) {
       nextBtn.addEventListener("click", () => {
@@ -6176,32 +6913,73 @@ class ListeningMode {
   handleMicClick() {
     const micBtn = this.container.querySelector("#btn-mic-dictate");
     const feedbackEl = this.container.querySelector("#listening-feedback");
+    const task = this.getCurrentTask();
 
     micBtn.classList.add("mic-recording");
-    micBtn.innerHTML = `<span>🔴 Говорите...</span>`;
+    micBtn.innerHTML = `<span>⏳ Подключение...</span>`;
+
+    if (feedbackEl) {
+      feedbackEl.innerHTML = `<div class="feedback-box" style="background: rgba(37,99,235,0.1); border: 1px dashed rgba(59,130,246,0.3);"><p>⏳ Инициализация микрофона... Говорите после включения красного индикатора.</p></div>`;
+    }
 
     speech.startListening(
       (transcript) => {
         micBtn.classList.remove("mic-recording");
         micBtn.innerHTML = `<span>🎙️</span> Сказать вслух`;
+
+        // Нормализуем речь (раскрываем беглые сокращения I'd -> I would и т.д.)
+        const normalized = normalizeSpeechTranscript(transcript);
+        const words = normalized.replace(/[.,?!]/g, "").split(/\s+/).filter(Boolean);
+
+        this.selectedTokens = [];
+        this.bankTokens = [...task.tokens];
+
+        words.forEach((w) => {
+          const bankIdx = this.bankTokens.findIndex(
+            (t) => t.toLowerCase() === w.toLowerCase()
+          );
+          if (bankIdx !== -1) {
+            const token = this.bankTokens.splice(bankIdx, 1)[0];
+            this.selectedTokens.push(token);
+          }
+        });
+
+        this.updateChips();
         this.evaluateTranscript(transcript);
       },
       (error) => {
         micBtn.classList.remove("mic-recording");
         micBtn.innerHTML = `<span>🎙️</span> Сказать вслух`;
-        feedbackEl.innerHTML = `<div class="feedback-box feedback-error"><p>🎙️ ${error}</p></div>`;
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `<div class="feedback-box feedback-error"><p>🎙️ ${error}</p></div>`;
+        }
       },
       () => {
         micBtn.classList.remove("mic-recording");
         micBtn.innerHTML = `<span>🎙️</span> Сказать вслух`;
+      },
+      (interim) => {
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `
+            <div class="feedback-box" style="background: rgba(37,99,235,0.15); border: 1px solid rgba(59,130,246,0.4);">
+              <p>🎙️ <b>Слышу в реальном времени:</b> <i>«${interim}»</i>...</p>
+            </div>
+          `;
+        }
+      },
+      () => {
+        micBtn.innerHTML = `<span>🔴 Слушаю, говорите...</span>`;
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `<div class="feedback-box" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);"><p>🔴 <b>Микрофон активен!</b> Произнесите фразу на английском.</p></div>`;
+        }
       }
     );
   }
 
   evaluateTranscript(transcript) {
     const task = this.getCurrentTask();
-    const cleanRecognized = transcript.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
-    const cleanExpected = task.en.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+    const cleanRecognized = normalizeSpeechTranscript(transcript).replace(/[^a-z0-9 ]/g, "").trim();
+    const cleanExpected = normalizeSpeechTranscript(task.en).replace(/[^a-z0-9 ]/g, "").trim();
 
     if (cleanRecognized === cleanExpected) {
       this.handleCompleteSuccess(task, true);
@@ -6209,10 +6987,27 @@ class ListeningMode {
       sound.playError();
       const feedbackEl = this.container.querySelector("#listening-feedback");
       if (feedbackEl) {
+        const recWords = cleanRecognized.split(/\s+/).filter(Boolean);
+        const expWords = cleanExpected.split(/\s+/).filter(Boolean);
+
+        const diffHtml = recWords
+          .map((word, idx) => {
+            const expectedWord = expWords[idx];
+            if (expectedWord && word === expectedWord) {
+              return `<span style="color: #4ade80; font-weight: 600;">${word}</span>`;
+            } else {
+              const hint = expectedWord
+                ? ` (ожидалось: <b style="color: #4ade80;">${expectedWord}</b>)`
+                : "";
+              return `<span style="color: #f87171; text-decoration: underline; font-weight: bold;">${word}</span>${hint}`;
+            }
+          })
+          .join(" ");
+
         feedbackEl.innerHTML = `
           <div class="feedback-box feedback-error">
-            <div class="feedback-title">🎙️ Вы сказали: «${transcript}»</div>
-            <p>Близко, но не совсем совпало. Попробуйте еще раз или соберите кирпичиками!</p>
+            <div class="feedback-title">🎙️ Распознано: «${diffHtml}»</div>
+            <p>Близко, но не совсем совпало. Обратите внимание на выделенные слова или нажмите <b>«Проверить»</b> / соберите кирпичиками!</p>
           </div>
         `;
       }
@@ -6223,6 +7018,7 @@ class ListeningMode {
     const assembledEl = this.container.querySelector("#assembled-line");
     const bankEl = this.container.querySelector("#token-bank");
     const statusBadge = this.container.querySelector("#list-status-badge");
+    const nextBtn = this.container.querySelector("#btn-list-next");
     const task = this.getCurrentTask();
     if (!assembledEl || !bankEl || !task) return;
 
@@ -6230,7 +7026,7 @@ class ListeningMode {
 
     // 1. Отрисовка собранных слов с мгновенной подсветкой
     if (this.selectedTokens.length === 0) {
-      assembledEl.innerHTML = `<div class="empty-placeholder">Слушай аудио и кликай по кирпичикам...</div>`;
+      assembledEl.innerHTML = `<div class="empty-placeholder">Слушай аудио и кликай по кирпичикам или надиктуй вслух...</div>`;
       if (statusBadge) statusBadge.innerHTML = "";
     } else {
       let correctCount = 0;
@@ -6245,22 +7041,21 @@ class ListeningMode {
           if (isExpected && !hasError) {
             correctCount++;
             return `
-              <button class="word-chip chip-assembled chip-step-correct" data-idx="${idx}" title="Правильно услышано!">
-                <span class="chip-check-icon">✓</span> ${token} <span class="remove-x">✕</span>
+              <button class="word-chip chip-correct chip-assembled" data-idx="${idx}" title="Кликни, чтобы вернуть">
+                ✓ ${token} <span class="chip-remove">✕</span>
               </button>
             `;
           } else {
             hasError = true;
             return `
-              <button class="word-chip chip-assembled chip-wrong-order" data-idx="${idx}" title="Не то слово или нарушен порядок">
-                ${token} <span class="remove-x">✕</span>
+              <button class="word-chip chip-wrong chip-assembled" data-idx="${idx}" title="Кликни, чтобы вернуть">
+                ✗ ${token} <span class="chip-remove">✕</span>
               </button>
             `;
           }
         })
         .join("");
 
-      // Обновляем статусную полосу реакции
       if (statusBadge) {
         if (!hasError) {
           statusBadge.innerHTML = `<span class="badge-status-progress">🟢 Верно: ${correctCount} из ${expectedTokens.length}</span>`;
@@ -6305,7 +7100,6 @@ class ListeningMode {
         const token = this.bankTokens.splice(bankIdx, 1)[0];
         this.selectedTokens.push(token);
 
-        // Озвучиваем выбранное слово диктором вслух!
         speech.speak(token, 1.0);
         sound.playClick();
 
@@ -6320,16 +7114,19 @@ class ListeningMode {
     state.addXP(fromMic ? 35 : 25);
     state.markSolved("listening", task.id);
 
-    // Озвучиваем победную фразу целиком
     speech.speak(task.en);
 
     const feedbackEl = this.container.querySelector("#listening-feedback");
-    const checkBtn = this.container.querySelector("#btn-list-check");
     const nextBtn = this.container.querySelector("#btn-list-next");
     const statusBadge = this.container.querySelector("#list-status-badge");
 
     if (statusBadge) {
       statusBadge.innerHTML = `<span class="badge-status-complete">✨ Вся фраза собрана идеально!</span>`;
+    }
+
+    if (nextBtn) {
+      nextBtn.classList.add("btn-success-next");
+      nextBtn.innerHTML = `✨ Следующая фраза ➔`;
     }
 
     if (feedbackEl) {
@@ -6350,9 +7147,6 @@ class ListeningMode {
         replayBtn.addEventListener("click", () => speech.speak(task.en));
       }
     }
-
-    if (checkBtn) checkBtn.classList.add("hidden");
-    if (nextBtn) nextBtn.classList.remove("hidden");
   }
 
   checkSolution() {
@@ -6378,11 +7172,450 @@ class ListeningMode {
       }
     }
   }
+
+  // ========================================================
+  // 2. ТРЕНАЖЁР ЧИСЕЛ И СЧЁТА НА СЛУХ (1–100 & -TEEN/-TY)
+  // ========================================================
+
+  setupNewNumberTask() {
+    this.isNumberAnswered = false;
+    this.numberFeedback = null;
+
+    if (this.numberSubmode === "teen_ty") {
+      const pair = TEEN_TY_PAIRS[this.pairIndex % TEEN_TY_PAIRS.length];
+      // Случайно выбираем, озвучивать ли число на -teen или десяток на -ty
+      const pickTeen = Math.random() < 0.5;
+      this.currentTargetNumber = pickTeen ? pair.teenNum : pair.tyNum;
+      this.targetNumberWord = pickTeen ? pair.teenWord : pair.tyWord;
+    } else if (this.numberSubmode === "one_to_twenty") {
+      this.currentTargetNumber = Math.floor(Math.random() * 20) + 1;
+      this.targetNumberWord = numberToEnglish(this.currentTargetNumber);
+    } else if (this.numberSubmode === "random_100") {
+      this.currentTargetNumber = Math.floor(Math.random() * 100) + 1;
+      this.targetNumberWord = numberToEnglish(this.currentTargetNumber);
+    }
+  }
+
+  renderNumbersTrainer() {
+    const pair = TEEN_TY_PAIRS[this.pairIndex % TEEN_TY_PAIRS.length];
+
+    this.container.innerHTML = `
+      <div class="subtabs-bar" style="display: inline-flex; background: rgba(10, 16, 30, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px; padding: 5px; gap: 4px; margin-bottom: 20px;">
+        <button class="subtab-btn" data-subtab="phrases" style="background: transparent; color: #94a3b8; border: none; border-radius: 9999px; padding: 8px 20px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+          <span>🎧</span> Разговорные фразы (${LISTENING_TASKS.length})
+        </button>
+        <button class="subtab-btn active" data-subtab="numbers" style="background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%); color: #ffffff; border: none; border-radius: 9999px; padding: 8px 20px; font-size: 13.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);">
+          <span>🔢</span> Тренажёр чисел (1–100 & -teen / -ty)
+        </button>
+      </div>
+
+      <div class="mode-header">
+        <div class="mode-badge">🔢 Тренажёр чисел на слух</div>
+        <div class="category-filters-row">
+          <button class="filter-btn ${this.numberSubmode === "teen_ty" ? "active" : ""}" data-num-sub="teen_ty">
+            ⚡ Ловушки -teen vs -ty (13/30 — 19/90)
+          </button>
+          <button class="filter-btn ${this.numberSubmode === "one_to_twenty" ? "active" : ""}" data-num-sub="one_to_twenty">
+            🎯 Базовые 1–20
+          </button>
+          <button class="filter-btn ${this.numberSubmode === "random_100" ? "active" : ""}" data-num-sub="random_100">
+            🎲 Любое число 1–100
+          </button>
+          <button class="filter-btn ${this.numberSubmode === "cheatsheet" ? "active" : ""}" data-num-sub="cheatsheet">
+            📖 Шпаргалка & Правило
+          </button>
+        </div>
+      </div>
+
+      <div class="task-card">
+        ${
+          this.numberSubmode === "cheatsheet"
+            ? this.renderNumberCheatsheet()
+            : this.renderNumberExerciseView(pair)
+        }
+      </div>
+    `;
+
+    this.bindNumberEvents();
+  }
+
+  renderNumberExerciseView(pair) {
+    return `
+      <div class="number-big-display">
+        <div style="font-size: 12.5px; text-transform: uppercase; letter-spacing: 2px; color: #94a3b8; margin-bottom: 8px; font-weight: 700;">
+          🎧 Слушай диктора и определи число на слух:
+        </div>
+        <div class="number-digit" id="num-secret-display">
+          ${this.isNumberAnswered ? this.currentTargetNumber : "🎧 ???"}
+        </div>
+        <div class="number-word" id="num-word-display" style="color: #f8fafc; font-weight: 700;">
+          ${this.isNumberAnswered ? this.targetNumberWord : "«Нажмите 🔊 или назовите число вслух»"}
+        </div>
+        <div class="number-phonetic" id="num-phonetic-display" style="color: #cbd5e1; max-width: 500px; margin: 8px auto 0;">
+          ${this.isNumberAnswered && this.numberSubmode === "teen_ty" ? pair.tip : ""}
+        </div>
+      </div>
+
+      <div class="listening-control-box">
+        <div class="audio-buttons-row">
+          <button class="btn-audio-play" id="btn-play-number">
+            <span class="audio-icon">🔊</span> Слушать число
+          </button>
+          <button class="btn-audio-slow" id="btn-play-number-slow">
+            <span class="audio-icon">🐢</span> Медленно
+          </button>
+          <button class="btn-audio-mic" id="btn-mic-number">
+            <span class="audio-icon">🎙️</span> Сказать число вслух
+          </button>
+        </div>
+      </div>
+
+      ${
+        this.numberSubmode === "teen_ty"
+          ? `
+            <div style="text-align: center; font-size: 14px; color: #94a3b8; margin: 16px 0 8px; font-weight: 600;">
+              Какое число прозвучало? Выберите карточку или назовите в микрофон:
+            </div>
+            <div class="number-choice-grid">
+              <button class="btn-number-choice" data-choice-val="${pair.teenNum}" style="background: linear-gradient(160deg, #152238 0%, #0c1424 100%); color: #f8fafc; border: 1.5px solid rgba(56, 189, 248, 0.35); border-radius: 18px; padding: 22px 18px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.8px; color: #38bdf8; background: rgba(56,189,248,0.12); padding: 2px 10px; border-radius: 9999px; border: 1px solid rgba(56,189,248,0.25);">🔔 Ударный -ТИИН</div>
+                <span style="font-size: 34px; font-weight: 800; color: #38bdf8; text-shadow: 0 0 15px rgba(56,189,248,0.45); line-height: 1.1;">${pair.teenNum}</span>
+                <span style="font-size: 18px; font-weight: 700; color: #f8fafc; letter-spacing: 0.5px;">${pair.teenStress}</span>
+                <span style="font-size: 13px; color: #94a3b8;">${pair.teenPhonetic}</span>
+              </button>
+              <button class="btn-number-choice" data-choice-val="${pair.tyNum}" style="background: linear-gradient(160deg, #241d1a 0%, #151110 100%); color: #f8fafc; border: 1.5px solid rgba(245, 158, 11, 0.35); border-radius: 18px; padding: 22px 18px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.8px; color: #fbbf24; background: rgba(245,158,11,0.12); padding: 2px 10px; border-radius: 9999px; border: 1px solid rgba(245,158,11,0.25);">⚡ Ударная ПЕРВАЯ</div>
+                <span style="font-size: 34px; font-weight: 800; color: #f59e0b; text-shadow: 0 0 15px rgba(245,158,11,0.45); line-height: 1.1;">${pair.tyNum}</span>
+                <span style="font-size: 18px; font-weight: 700; color: #f8fafc; letter-spacing: 0.5px;">${pair.tyStress}</span>
+                <span style="font-size: 13px; color: #94a3b8;">${pair.tyPhonetic}</span>
+              </button>
+            </div>
+          `
+          : `
+            <div style="text-align: center; margin: 18px 0;">
+              <div style="font-size: 14px; color: #94a3b8; margin-bottom: 10px; font-weight: 600;">
+                Введите число цифрами или назовите по-английски в микрофон:
+              </div>
+              <div class="number-input-row">
+                <input type="number" class="number-input-field" id="num-direct-input" placeholder="№" min="1" max="100" />
+                <button class="btn btn-primary" id="btn-num-submit">Проверить</button>
+              </div>
+            </div>
+          `
+      }
+
+      <div class="feedback-area" id="number-feedback">
+        ${this.numberFeedback || ""}
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-secondary" id="btn-num-prev">◀ Предыдущее</button>
+        <button class="btn btn-secondary" id="btn-num-random">🎲 Случайное</button>
+        <button class="btn btn-next ${this.isNumberAnswered ? "btn-success-next" : ""}" id="btn-num-next">
+          ${this.isNumberAnswered ? "✨ Следующее число ➔" : "Следующее ➔"}
+        </button>
+      </div>
+    `;
+  }
+
+  renderNumberCheatsheet() {
+    return `
+      <div style="padding: 10px 0;">
+        <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+          <h3 style="color: #38bdf8; margin: 0 0 10px; font-size: 18px;">💡 Главное правило: -TEEN vs -TY (Ударение решает всё!)</h3>
+          <p style="margin: 0 0 8px; line-height: 1.5; color: #e2e8f0;">
+            В английском языке разница между <b>13–19</b> и <b>30–90</b> определяется <b>УДАРЕНИЕМ</b>:
+          </p>
+          <ul style="margin: 0 0 10px 20px; line-height: 1.6; color: #cbd5e1;">
+            <li><b>13–19 (-TEEN):</b> Ударение ВСЕГДА падает на долгий конец <b>-TEEN</b>: <code>thir-TEEN</code>, <code>four-TEEN</code>, <code>fif-TEEN</code>. Звук [ии] тянется!</li>
+            <li><b>20–90 (-TY):</b> Ударение ВСЕГДА падает на <b>ПЕРВЫЙ СЛОГ</b>: <code>THIR-ty</code>, <code>FOR-ty</code>, <code>FIF-ty</code>. Окончание короткое и глухое [ти].</li>
+            <li><b>Ловушка орфографии:</b> Число <b>40 (forty)</b> пишется <b>БЕЗ буквы «u»</b>, в отличие от 4 (four) и 14 (fourteen)!</li>
+          </ul>
+        </div>
+
+        <h4 style="color: #f8fafc; margin: 16px 0 8px;">🔢 Нажмите на любое число, чтобы послушать правильное произношение:</h4>
+        
+        <div style="font-weight: bold; color: #38bdf8; margin-top: 12px;">Базовые числа (1–20):</div>
+        <div class="number-table-grid">
+          ${Object.entries(NUMBER_WORDS_1_TO_20)
+            .map(
+              ([num, data]) => `
+            <div class="number-table-chip" data-num-val="${num}">
+              <b>${num}</b> <span>${data.word}</span> 🔊
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+
+        <div style="font-weight: bold; color: #f59e0b; margin-top: 18px;">Десятки (20–100):</div>
+        <div class="number-table-grid">
+          ${Object.entries(TENS_WORDS)
+            .map(
+              ([num, data]) => `
+            <div class="number-table-chip" data-num-val="${num}">
+              <b>${num}</b> <span>${data.word}</span> 🔊
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  bindNumberEvents() {
+    // Переключение подвкладок
+    const subtabBtns = this.container.querySelectorAll(".subtab-btn");
+    subtabBtns.forEach((b) => {
+      b.addEventListener("click", () => {
+        sound.playClick();
+        this.activeTab = b.dataset.subtab;
+        this.render();
+      });
+    });
+
+    // Фильтры режимов чисел
+    const numSubBtns = this.container.querySelectorAll("[data-num-sub]");
+    numSubBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        sound.playClick();
+        this.numberSubmode = btn.dataset.numSub;
+        this.setupNewNumberTask();
+        this.render();
+      });
+    });
+
+    if (this.numberSubmode === "cheatsheet") {
+      // Клик по числам в шпаргалке для озвучки
+      this.container.querySelectorAll(".number-table-chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const val = parseInt(chip.dataset.numVal, 10);
+          const enWord = numberToEnglish(val);
+          sound.playClick();
+          speech.speak(enWord);
+        });
+      });
+      return;
+    }
+
+    // Озвучка числа
+    const playNorm = this.container.querySelector("#btn-play-number");
+    if (playNorm) {
+      playNorm.addEventListener("click", () => {
+        sound.playClick();
+        speech.speak(this.targetNumberWord, 1.0);
+      });
+    }
+
+    const playSlow = this.container.querySelector("#btn-play-number-slow");
+    if (playSlow) {
+      playSlow.addEventListener("click", () => {
+        sound.playClick();
+        speech.speakSlow(this.targetNumberWord);
+      });
+    }
+
+    // Авто-озвучка при первой загрузке карточки
+    setTimeout(() => {
+      speech.speak(this.targetNumberWord, 1.0);
+    }, 300);
+
+    // Микрофон для тренировки произношения числа
+    const micBtn = this.container.querySelector("#btn-mic-number");
+    if (micBtn) {
+      micBtn.addEventListener("click", () => this.handleNumberMic());
+    }
+
+    // Кнопки выбора (в режиме -teen vs -ty)
+    const choiceBtns = this.container.querySelectorAll(".btn-number-choice");
+    choiceBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (this.isNumberAnswered) return;
+        const val = parseInt(btn.dataset.choiceVal, 10);
+        this.handleNumberAnswer(val, btn);
+      });
+    });
+
+    // Прямой ввод числа цифрами
+    const submitBtn = this.container.querySelector("#btn-num-submit");
+    const inputEl = this.container.querySelector("#num-direct-input");
+    if (submitBtn && inputEl) {
+      const handleDirect = () => {
+        if (this.isNumberAnswered) return;
+        const val = parseInt(inputEl.value, 10);
+        if (!isNaN(val)) {
+          this.handleNumberAnswer(val);
+        }
+      };
+      submitBtn.addEventListener("click", handleDirect);
+      inputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") handleDirect();
+      });
+    }
+
+    // Навигация по числам
+    const nextBtn = this.container.querySelector("#btn-num-next");
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.pairIndex++;
+        this.setupNewNumberTask();
+        this.render();
+      });
+    }
+
+    const prevBtn = this.container.querySelector("#btn-num-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.pairIndex = (this.pairIndex - 1 + TEEN_TY_PAIRS.length) % TEEN_TY_PAIRS.length;
+        this.setupNewNumberTask();
+        this.render();
+      });
+    }
+
+    const randBtn = this.container.querySelector("#btn-num-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.pairIndex = Math.floor(Math.random() * TEEN_TY_PAIRS.length);
+        this.setupNewNumberTask();
+        this.render();
+      });
+    }
+  }
+
+  handleNumberMic() {
+    const micBtn = this.container.querySelector("#btn-mic-number");
+    const feedbackEl = this.container.querySelector("#number-feedback");
+    if (!micBtn) return;
+
+    micBtn.classList.add("mic-recording");
+    micBtn.innerHTML = `<span>⏳ Подключение...</span>`;
+
+    if (feedbackEl) {
+      feedbackEl.innerHTML = `<div class="feedback-box" style="background: rgba(37,99,235,0.1); border: 1px dashed rgba(59,130,246,0.3);"><p>⏳ Включение микрофона... Назовите число по-английски.</p></div>`;
+    }
+
+    speech.startListening(
+      (transcript) => {
+        micBtn.classList.remove("mic-recording");
+        micBtn.innerHTML = `<span>🎙️</span> Сказать число вслух`;
+
+        const parsed = parseSpokenNumber(transcript);
+        if (parsed !== null) {
+          this.handleNumberAnswer(parsed, null, transcript);
+        } else {
+          sound.playError();
+          if (feedbackEl) {
+            feedbackEl.innerHTML = `
+              <div class="feedback-box feedback-error">
+                <div class="feedback-title">🎙️ Распознано: «${transcript}»</div>
+                <p>Число не распознано. Произнесите число чётче, например: <b>«${this.targetNumberWord}»</b>.</p>
+              </div>
+            `;
+          }
+        }
+      },
+      (err) => {
+        micBtn.classList.remove("mic-recording");
+        micBtn.innerHTML = `<span>🎙️</span> Сказать число вслух`;
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `<div class="feedback-box feedback-error"><p>🎙️ ${err}</p></div>`;
+        }
+      },
+      () => {
+        micBtn.classList.remove("mic-recording");
+        micBtn.innerHTML = `<span>🎙️</span> Сказать число вслух`;
+      },
+      (interim) => {
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `
+            <div class="feedback-box" style="background: rgba(37,99,235,0.15); border: 1px solid rgba(59,130,246,0.4);">
+              <p>🎙️ <b>Слышу в реальном времени:</b> <i>«${interim}»</i>...</p>
+            </div>
+          `;
+        }
+      },
+      () => {
+        micBtn.innerHTML = `<span>🔴 Слушаю, говорите...</span>`;
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `<div class="feedback-box" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);"><p>🔴 <b>Говорите!</b> Произнесите число по-английски.</p></div>`;
+        }
+      }
+    );
+  }
+
+  handleNumberAnswer(chosenVal, clickedBtn = null, spokenRaw = null) {
+    this.isNumberAnswered = true;
+    const isCorrect = chosenVal === this.currentTargetNumber;
+    const pair = TEEN_TY_PAIRS[this.pairIndex % TEEN_TY_PAIRS.length];
+
+    if (clickedBtn) {
+      clickedBtn.classList.add(isCorrect ? "choice-correct" : "choice-wrong");
+    }
+
+    const secretEl = this.container.querySelector("#num-secret-display");
+    const wordEl = this.container.querySelector("#num-word-display");
+    const phoneticEl = this.container.querySelector("#num-phonetic-display");
+    const nextBtn = this.container.querySelector("#btn-num-next");
+    const feedbackEl = this.container.querySelector("#number-feedback");
+
+    if (secretEl) secretEl.textContent = this.currentTargetNumber;
+    if (wordEl) wordEl.textContent = this.targetNumberWord;
+    if (phoneticEl && this.numberSubmode === "teen_ty") phoneticEl.textContent = pair.tip;
+
+    if (nextBtn) {
+      nextBtn.classList.add("btn-success-next");
+      nextBtn.innerHTML = `✨ Следующее число ➔`;
+    }
+
+    if (isCorrect) {
+      sound.playSuccess();
+      state.addXP(spokenRaw ? 30 : 20);
+
+      const msg = spokenRaw
+        ? `🎯 Идеальное произношение! Вы сказали «${spokenRaw}» (${chosenVal}), ударение поставлено безупречно!`
+        : `🎯 В яблочко! Диктор произнёс именно ${this.targetNumberWord} (${this.currentTargetNumber}).`;
+
+      this.numberFeedback = `
+        <div class="feedback-box feedback-success">
+          <div class="feedback-title">${msg}</div>
+          <div class="audio-tip">💡 <strong>Фонетический акцент:</strong> ${
+            this.numberSubmode === "teen_ty"
+              ? pair.tip
+              : `Число ${this.currentTargetNumber} читается как «${this.targetNumberWord}».`
+          }</div>
+        </div>
+      `;
+    } else {
+      sound.playError();
+      state.registerError();
+
+      const chosenWord = numberToEnglish(chosenVal);
+      this.numberFeedback = `
+        <div class="feedback-box feedback-error">
+          <div class="feedback-title">⚠️ Не совсем: вы выбрали ${chosenWord} (${chosenVal}), а звучало ${this.targetNumberWord} (${this.currentTargetNumber})!</div>
+          <p>${
+            this.numberSubmode === "teen_ty"
+              ? `<b>В чём разница:</b> ${pair.tip}`
+              : `Обратите внимание на звучание «${this.targetNumberWord}». Нажмите 🔊 чтобы послушать ещё раз.`
+          }</p>
+        </div>
+      `;
+    }
+
+    if (feedbackEl) {
+      feedbackEl.innerHTML = this.numberFeedback;
+    }
+  }
 }
 
 
 /* --- js/modes/sprint.js --- */
 // Режим «Блиц-спринт / Разговорная реакция» (Speed Sprint)
+
 
 
 
@@ -6400,10 +7633,10 @@ class SprintMode {
   }
 
   init() {
-    this.currentIndex = 0;
     this.combo = 0;
     this.score = 0;
-    this.loadQuestion(0);
+    const rand = Math.floor(Math.random() * SPRINT_TASKS.length);
+    this.loadQuestion(rand);
   }
 
   getCurrentTask() {
@@ -6613,6 +7846,7 @@ class SprintMode {
 // 2. Живой AI-собеседник (LM Studio)
 // 3. Интерактивный перевод слов по наведению / клику (Dictionary)
 // 4. Мягкий доброжелательный AI-наставник речи (Coach Review)
+
 
 
 
@@ -7784,6 +9018,7 @@ class ScenariosMode {
 
 
 
+
 class FlashcardsMode {
   constructor(containerEl) {
     this.container = containerEl;
@@ -7797,7 +9032,7 @@ class FlashcardsMode {
 
   init() {
     this.cards = flashcardsService.getCardsByCategory(this.currentCategory);
-    this.currentIndex = 0;
+    this.currentIndex = this.cards.length ? Math.floor(Math.random() * this.cards.length) : 0;
     this.isFlipped = false;
     this.isRecording = false;
     this.lastHeatmap = null;
@@ -8174,6 +9409,7 @@ class FlashcardsMode {
 /* --- js/modes/verbs.js --- */
 // Режим «⚡ Неправильные глаголы по Драгункину» (5 золотых семейств)
 // Без тупой зубрежки по алфавиту — ритмические трио, озвучка и экспресс-тренажер
+
 
 
 
@@ -8753,6 +9989,7 @@ class VerbsMode {
 
 
 
+
 class QuizMode {
   constructor(containerEl) {
     this.container = containerEl;
@@ -8763,7 +10000,8 @@ class QuizMode {
   }
 
   init() {
-    this.loadQuestion(0);
+    const rand = Math.floor(Math.random() * QUIZ_TASKS.length);
+    this.loadQuestion(rand);
   }
 
   getCurrentQuestion() {
@@ -8799,7 +10037,10 @@ class QuizMode {
     this.container.innerHTML = `
       <div class="mode-header">
         <div class="mode-badge">📝 Экспресс-тест Парето</div>
-        <div class="task-counter">Вопрос ${this.currentIndex + 1} из ${QUIZ_TASKS.length}</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="task-counter">Вопрос ${this.currentIndex + 1} из ${QUIZ_TASKS.length}</div>
+          <button class="btn-random-card" id="btn-quiz-random" title="Случайный вопрос">🎲</button>
+        </div>
       </div>
 
       <div class="task-card">
@@ -8829,8 +10070,9 @@ class QuizMode {
         <div class="feedback-area" id="quiz-feedback"></div>
 
         <div class="action-buttons">
-          <button class="btn btn-next ${this.answered ? "" : "hidden"}" id="btn-quiz-next">
-            ${this.currentIndex + 1 === QUIZ_TASKS.length ? "Начать сначала ➔" : "Следующий вопрос ➔"}
+          <button class="btn btn-secondary" id="btn-quiz-prev">◀ Назад</button>
+          <button class="btn btn-next ${this.answered ? "btn-success-next" : ""}" id="btn-quiz-next">
+            ${this.answered ? "✨ Следующий вопрос ➔" : "Далее ➔"}
           </button>
         </div>
       </div>
@@ -8848,6 +10090,23 @@ class QuizMode {
         this.selectOption(optIdx);
       });
     });
+
+    const randBtn = this.container.querySelector("#btn-quiz-random");
+    if (randBtn) {
+      randBtn.addEventListener("click", () => {
+        sound.playClick();
+        const rand = Math.floor(Math.random() * QUIZ_TASKS.length);
+        this.loadQuestion(rand);
+      });
+    }
+
+    const prevBtn = this.container.querySelector("#btn-quiz-prev");
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        sound.playClick();
+        this.loadQuestion(this.currentIndex - 1);
+      });
+    }
 
     const nextBtn = this.container.querySelector("#btn-quiz-next");
     if (nextBtn) {
@@ -8898,6 +10157,7 @@ class QuizMode {
 /* --- js/handbook.js --- */
 // Интерактивный справочник по правилам шпаргалки, 50 разговорным фразам, связкам B1 и тех-созвонам
 // С удобными вкладками разделов, чтобы избежать бесконечной «портянки»
+
 
 
 
@@ -9321,6 +10581,7 @@ class HandbookView {
 
 
 
+
 class EnglishTrainerApp {
   constructor() {
     this.currentTab = "builder";
@@ -9371,6 +10632,40 @@ class EnglishTrainerApp {
           state.resetProgress();
           sound.playClick();
         }
+      });
+    }
+
+    // Обработчик модального окна авторства Yurii Borodin
+    const authorBadge = document.getElementById("btn-author-badge");
+    const authorModal = document.getElementById("author-modal");
+    const closeAuthorModal = document.getElementById("btn-close-author-modal");
+    const okAuthorModal = document.getElementById("btn-ok-author-modal");
+    const footerAuthorLink = document.getElementById("footer-author-link");
+
+    const openAuthorModal = () => {
+      if (authorModal) {
+        authorModal.style.display = "flex";
+        sound.playClick();
+      }
+    };
+
+    const closeAuthorModalHandler = () => {
+      if (authorModal) {
+        authorModal.style.display = "none";
+        sound.playClick();
+      }
+    };
+
+    if (authorBadge) authorBadge.addEventListener("click", openAuthorModal);
+    if (footerAuthorLink) {
+      footerAuthorLink.style.cursor = "pointer";
+      footerAuthorLink.addEventListener("click", openAuthorModal);
+    }
+    if (closeAuthorModal) closeAuthorModal.addEventListener("click", closeAuthorModalHandler);
+    if (okAuthorModal) okAuthorModal.addEventListener("click", closeAuthorModalHandler);
+    if (authorModal) {
+      authorModal.addEventListener("click", (e) => {
+        if (e.target === authorModal) closeAuthorModalHandler();
       });
     }
   }

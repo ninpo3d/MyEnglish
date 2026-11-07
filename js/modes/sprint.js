@@ -17,10 +17,10 @@ export class SprintMode {
   }
 
   init() {
-    this.currentIndex = 0;
     this.combo = 0;
     this.score = 0;
-    this.loadQuestion(0);
+    const rand = Math.floor(Math.random() * SPRINT_TASKS.length);
+    this.loadQuestion(rand);
   }
 
   getCurrentTask() {

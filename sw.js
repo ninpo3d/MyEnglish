@@ -1,5 +1,5 @@
 // Service Worker для автономной (офлайн) работы MyEnglish на смартфоне
-const CACHE_NAME = "myenglish-offline-v2";
+const CACHE_NAME = "myenglish-offline-v10";
 
 const ASSETS_TO_CACHE = [
   "./",
@@ -37,7 +37,8 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Перехват запросов: отдаем из кеша мгновенно, даже если нет интернета
+// Перехват запросов: сначала сеть (Network-First), чтобы сразу видеть обновления.
+// Если интернета нет (офлайн) — мгновенно отдаем сохраненный кэш!
 self.addEventListener("fetch", (event) => {
   // Игнорируем запросы к локальному LM Studio (127.0.0.1)
   if (event.request.url.includes("127.0.0.1") || event.request.url.includes("localhost:1234")) {
@@ -45,16 +46,25 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).catch(() => {
-        // Если офлайн и запрашивается страница — возвращаем index.html из кеша
-        if (event.request.mode === "navigate") {
-          return caches.match("./index.html");
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200 && event.request.method === "GET") {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
         }
-      });
-    })
+        return networkResponse;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          if (event.request.mode === "navigate") {
+            return caches.match("./index.html");
+          }
+        });
+      })
   );
 });

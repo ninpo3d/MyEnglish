@@ -39,3 +39,16 @@
 .feedback-box {
   animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+@keyframes goldShimmer {
+  0%, 100% {
+    box-shadow: 0 0 14px rgba(245, 158, 11, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(245, 158, 11, 0.55);
+  }
+}
+
+.author-badge {
+  animation: goldShimmer 3s infinite ease-in-out;
+}

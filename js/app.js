@@ -64,6 +64,40 @@ class EnglishTrainerApp {
         }
       });
     }
+
+    // Обработчик модального окна авторства Yurii Borodin
+    const authorBadge = document.getElementById("btn-author-badge");
+    const authorModal = document.getElementById("author-modal");
+    const closeAuthorModal = document.getElementById("btn-close-author-modal");
+    const okAuthorModal = document.getElementById("btn-ok-author-modal");
+    const footerAuthorLink = document.getElementById("footer-author-link");
+
+    const openAuthorModal = () => {
+      if (authorModal) {
+        authorModal.style.display = "flex";
+        sound.playClick();
+      }
+    };
+
+    const closeAuthorModalHandler = () => {
+      if (authorModal) {
+        authorModal.style.display = "none";
+        sound.playClick();
+      }
+    };
+
+    if (authorBadge) authorBadge.addEventListener("click", openAuthorModal);
+    if (footerAuthorLink) {
+      footerAuthorLink.style.cursor = "pointer";
+      footerAuthorLink.addEventListener("click", openAuthorModal);
+    }
+    if (closeAuthorModal) closeAuthorModal.addEventListener("click", closeAuthorModalHandler);
+    if (okAuthorModal) okAuthorModal.addEventListener("click", closeAuthorModalHandler);
+    if (authorModal) {
+      authorModal.addEventListener("click", (e) => {
+        if (e.target === authorModal) closeAuthorModalHandler();
+      });
+    }
   }
 
   updateStatsHeader() {

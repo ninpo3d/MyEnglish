@@ -13,6 +13,7 @@ const files = [
   'js/data/bug-hunter-tasks.js',
   'js/data/switchboard-tasks.js',
   'js/data/listening-tasks.js',
+  'js/data/numbers-data.js',
   'js/data/sprint-tasks.js',
   'js/data/scenarios-tasks.js',
   'js/data/flashcards-data.js',
@@ -46,7 +47,8 @@ for (const relPath of files) {
   const fullPath = path.join(__dirname, relPath);
   let content = fs.readFileSync(fullPath, 'utf8');
 
-  // Убираем import / export
+  // Убираем import / export (включая многострочные)
+  content = content.replace(/import\s+[\s\S]*?from\s+['"].*?['"];?/g, '');
   content = content.replace(/^import\s+.*?;?\s*$/gm, '');
   content = content.replace(/^export\s+(const|class|let|var|function)\s+/gm, '$1 ');
   content = content.replace(/^export\s+default\s+.*?;?\s*$/gm, '');

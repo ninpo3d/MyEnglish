@@ -10,7 +10,6 @@ class SpeechEngine {
     this.femaleVoices = [];
     this.defaultVoice = null;
     this.isListening = false;
-    this.audioStream = null;
 
     this.initVoices();
     this.initRecognition();
@@ -197,23 +196,7 @@ class SpeechEngine {
     return rec;
   }
 
-  async ensureMicPermission() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        // ВАЖНО: На Android микрофон блокируется, если удерживать MediaStream!
-        // Освобождаем микрофон сразу после получения разрешения:
-        stream.getTracks().forEach((track) => track.stop());
-        return true;
-      } catch (e) {
-        console.warn("getUserMedia permission error:", e);
-        return false;
-      }
-    }
-    return true;
-  }
-
-  async startListening(onResult, onError = null, onEnd = null) {
+  startListening(onResult, onError = null, onEnd = null, onInterim = null, onStart = null) {
     const SpeechRecognition = this.getSpeechRecognitionClass();
     if (!SpeechRecognition) {
       if (onError) onError("Распознавание речи не поддерживается браузером. Используйте Chrome или Edge.");
@@ -222,13 +205,6 @@ class SpeechEngine {
 
     if (this.isListening) {
       this.stopListening();
-      return;
-    }
-
-    const permitted = await this.ensureMicPermission();
-    if (!permitted) {
-      if (onError) onError("Нет доступа к микрофону. Разрешите доступ в настройках браузера.");
-      return;
     }
 
     const rec = this.createRecognition();
@@ -240,48 +216,56 @@ class SpeechEngine {
     this.recognition = rec;
     this.isListening = true;
 
+    let recognizedTranscript = "";
     let finalTranscript = "";
-    let lastInterim = "";
-    let hasDeliveredResult = false;
+
+    rec.onstart = () => {
+      if (onStart) onStart();
+    };
 
     rec.onresult = (event) => {
       let interim = "";
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        const res = event.results[i];
-        if (res.isFinal) {
-          finalTranscript += res[0].transcript;
-        } else {
-          interim += res[0].transcript;
+      let currentFinal = "";
+
+      for (let i = 0; i < event.results.length; ++i) {
+        const item = event.results[i];
+        if (item && item[0]) {
+          if (item.isFinal) {
+            currentFinal += item[0].transcript + " ";
+          } else {
+            interim += item[0].transcript + " ";
+          }
         }
       }
-      if (interim) {
-        lastInterim = interim;
+
+      if (currentFinal) {
+        finalTranscript = currentFinal.trim();
       }
 
-      const text = (finalTranscript || lastInterim).trim();
-      if (finalTranscript.trim() && !hasDeliveredResult) {
-        hasDeliveredResult = true;
-        this.isListening = false;
-        try {
-          rec.stop();
-        } catch (e) {}
-        if (onResult) onResult(text);
+      const fullText = (finalTranscript ? finalTranscript + " " + interim : interim).trim();
+      if (fullText) {
+        recognizedTranscript = fullText;
+        if (onInterim) {
+          onInterim(fullText);
+        }
       }
     };
 
     rec.onerror = (err) => {
       this.isListening = false;
-      let errorMsg = "Ошибка микрофона";
       const code = err.error || "";
+      let errorMsg = "Ошибка микрофона";
 
       if (code === "no-speech") {
-        errorMsg = "Речь не обнаружена. Попробуйте сказать громче и ближе к микрофону.";
+        errorMsg = "Речь не обнаружена. Подождите, пока индикатор загорится красным, и говорите ближе к микрофону.";
       } else if (code === "not-allowed" || code === "service-not-allowed") {
-        errorMsg = "Доступ к микрофону запрещен. Разрешите микрофон в настройках.";
+        errorMsg = "Доступ к микрофону запрещен в настройках браузера.";
       } else if (code === "network") {
-        errorMsg = "Ошибка сети сервиса распознавания. Если вы оффлайн, скачайте английский языковой пакет в настройках телефона (Настройки -> Язык и ввод -> Голосовой ввод Google -> Офлайн-распознавание).";
+        errorMsg = "Ошибка сети сервиса распознавания. В офлайн-режиме Android скачайте пакет English в настройках.";
       } else if (code === "audio-capture") {
         errorMsg = "Микрофон занят другим приложением или недоступен.";
+      } else if (code === "aborted") {
+        return;
       } else if (code) {
         errorMsg = `Ошибка распознавания (${code})`;
       }
@@ -291,10 +275,9 @@ class SpeechEngine {
 
     rec.onend = () => {
       this.isListening = false;
-      const finalText = (finalTranscript || lastInterim).trim();
-      if (!hasDeliveredResult && finalText) {
-        hasDeliveredResult = true;
-        if (onResult) onResult(finalText);
+      const textToDeliver = (finalTranscript || recognizedTranscript).trim();
+      if (textToDeliver) {
+        if (onResult) onResult(textToDeliver);
       }
       if (onEnd) onEnd();
     };
@@ -315,6 +298,53 @@ class SpeechEngine {
       this.isListening = false;
     }
   }
+}
+
+// Нормализатор разговорной речи (раскрывает беглые английские сокращения: I'd -> I would, don't -> do not)
+export function normalizeSpeechTranscript(text) {
+  if (!text) return "";
+  let clean = text.toLowerCase().trim();
+
+  const contractions = [
+    [/\bi'd\b/g, "i would"],
+    [/\byou'd\b/g, "you would"],
+    [/\bhe'd\b/g, "he would"],
+    [/\bshe'd\b/g, "she would"],
+    [/\bwe'd\b/g, "we would"],
+    [/\bthey'd\b/g, "they would"],
+    [/\bi'll\b/g, "i will"],
+    [/\byou'll\b/g, "you will"],
+    [/\bhe'll\b/g, "he will"],
+    [/\bshe'll\b/g, "she will"],
+    [/\bwe'll\b/g, "we will"],
+    [/\bthey'll\b/g, "they will"],
+    [/\bi'm\b/g, "i am"],
+    [/\byou're\b/g, "you are"],
+    [/\bwe're\b/g, "we are"],
+    [/\bthey're\b/g, "they are"],
+    [/\bdon't\b/g, "do not"],
+    [/\bdoesn't\b/g, "does not"],
+    [/\bdidn't\b/g, "did not"],
+    [/\bcan't\b/g, "cannot"],
+    [/\bwon't\b/g, "will not"],
+    [/\bisn't\b/g, "is not"],
+    [/\baren't\b/g, "are not"],
+    [/\bwasn't\b/g, "was not"],
+    [/\bweren't\b/g, "were not"],
+    [/\bhaven't\b/g, "have not"],
+    [/\bhasn't\b/g, "has not"],
+    [/\bhadn't\b/g, "had not"],
+    [/\bit's\b/g, "it is"],
+    [/\bthat's\b/g, "that is"],
+    [/\bwhat's\b/g, "what is"],
+    [/\bthere's\b/g, "there is"]
+  ];
+
+  for (const [pattern, replacement] of contractions) {
+    clean = clean.replace(pattern, replacement);
+  }
+
+  return clean;
 }
 
 export const speech = new SpeechEngine();

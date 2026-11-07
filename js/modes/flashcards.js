@@ -19,7 +19,7 @@ export class FlashcardsMode {
 
   init() {
     this.cards = flashcardsService.getCardsByCategory(this.currentCategory);
-    this.currentIndex = 0;
+    this.currentIndex = this.cards.length ? Math.floor(Math.random() * this.cards.length) : 0;
     this.isFlipped = false;
     this.isRecording = false;
     this.lastHeatmap = null;
