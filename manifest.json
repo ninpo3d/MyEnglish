@@ -1,11 +1,11 @@
 {
-  "name": "MyEnglish: Конструктор речи",
-  "short_name": "MyEnglish",
-  "description": "Интерактивный тренажер английского языка B1: 3D-карточки, глаголы Драгункина, 52 фразы и шпаргалка созвонов",
+  "name": "EnglishPareto: Золотые 20% речи",
+  "short_name": "EnglishPareto",
+  "description": "EnglishPareto: персональный тренажер разговорного английского языка по принципу Парето 80/20. Автор: Yurii Borodin",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#060913",
+  "theme_color": "#060913",
   "orientation": "portrait-primary",
   "icons": [
     {

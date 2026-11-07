@@ -6711,9 +6711,21 @@ class ListeningMode {
     this.targetNumberWord = "fourteen";
     this.numberFeedback = null;
     this.isNumberAnswered = false;
+
+    // Настройка автоперехода к следующему
+    this.autoNext = localStorage.getItem("myenglish_auto_next") !== "false";
+    this.autoNextTimer = null;
+  }
+
+  clearAutoNext() {
+    if (this.autoNextTimer) {
+      clearTimeout(this.autoNextTimer);
+      this.autoNextTimer = null;
+    }
   }
 
   init() {
+    this.clearAutoNext();
     // Стартовая фраза выбирается случайно!
     const rand = Math.floor(Math.random() * LISTENING_TASKS.length);
     this.pairIndex = Math.floor(Math.random() * TEEN_TY_PAIRS.length);
@@ -6730,6 +6742,7 @@ class ListeningMode {
   }
 
   loadTask(index) {
+    this.clearAutoNext();
     this.currentIndex = (index + LISTENING_TASKS.length) % LISTENING_TASKS.length;
     const task = this.getCurrentTask();
     this.selectedTokens = [];
@@ -6765,7 +6778,10 @@ class ListeningMode {
 
       <div class="mode-header">
         <div class="mode-badge">🎧 Аудио-диктант (На слух)</div>
-        <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <button class="btn-auto-next ${this.autoNext ? "active" : ""}" id="btn-toggle-auto-next" title="Автопереход к следующей фразе при правильном ответе">
+            ⚡ Авто: ${this.autoNext ? "ВКЛ" : "ВЫКЛ"}
+          </button>
           <div class="task-counter">Фраза ${this.currentIndex + 1} из ${LISTENING_TASKS.length}</div>
           <button class="btn-random-card" id="btn-list-random" title="Случайная фраза">🎲 Случайная</button>
         </div>
@@ -6879,10 +6895,23 @@ class ListeningMode {
       });
     }
 
+    // Тумблер автоперехода
+    const autoBtn = this.container.querySelector("#btn-toggle-auto-next");
+    if (autoBtn) {
+      autoBtn.addEventListener("click", () => {
+        this.clearAutoNext();
+        this.autoNext = !this.autoNext;
+        localStorage.setItem("myenglish_auto_next", this.autoNext ? "true" : "false");
+        sound.playClick();
+        this.render();
+      });
+    }
+
     // Навигация
     const prevBtn = this.container.querySelector("#btn-list-prev");
     if (prevBtn) {
       prevBtn.addEventListener("click", () => {
+        this.clearAutoNext();
         sound.playClick();
         this.loadTask(this.currentIndex - 1);
       });
@@ -6891,6 +6920,7 @@ class ListeningMode {
     const resetBtn = this.container.querySelector("#btn-list-reset");
     if (resetBtn) {
       resetBtn.addEventListener("click", () => {
+        this.clearAutoNext();
         sound.playClick();
         this.loadTask(this.currentIndex);
       });
@@ -6904,6 +6934,7 @@ class ListeningMode {
     const nextBtn = this.container.querySelector("#btn-list-next");
     if (nextBtn) {
       nextBtn.addEventListener("click", () => {
+        this.clearAutoNext();
         sound.playClick();
         this.loadTask(this.currentIndex + 1);
       });
@@ -7147,6 +7178,14 @@ class ListeningMode {
         replayBtn.addEventListener("click", () => speech.speak(task.en));
       }
     }
+
+    // Автопереход к следующей фразе, если включён тумблер
+    if (this.autoNext) {
+      this.clearAutoNext();
+      this.autoNextTimer = setTimeout(() => {
+        this.loadTask(this.currentIndex + 1);
+      }, 1500);
+    }
   }
 
   checkSolution() {
@@ -7210,7 +7249,12 @@ class ListeningMode {
       </div>
 
       <div class="mode-header">
-        <div class="mode-badge">🔢 Тренажёр чисел на слух</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="mode-badge">🔢 Тренажёр чисел на слух</div>
+          <button class="btn-auto-next ${this.autoNext ? "active" : ""}" id="btn-toggle-auto-next-num" title="Автопереход к следующему числу при правильном ответе">
+            ⚡ Авто: ${this.autoNext ? "ВКЛ" : "ВЫКЛ"}
+          </button>
+        </div>
         <div class="category-filters-row">
           <button class="filter-btn ${this.numberSubmode === "teen_ty" ? "active" : ""}" data-num-sub="teen_ty">
             ⚡ Ловушки -teen vs -ty (13/30 — 19/90)
@@ -7454,10 +7498,23 @@ class ListeningMode {
       });
     }
 
+    // Тумблер автоперехода по числам
+    const autoNumBtn = this.container.querySelector("#btn-toggle-auto-next-num");
+    if (autoNumBtn) {
+      autoNumBtn.addEventListener("click", () => {
+        this.clearAutoNext();
+        this.autoNext = !this.autoNext;
+        localStorage.setItem("myenglish_auto_next", this.autoNext ? "true" : "false");
+        sound.playClick();
+        this.render();
+      });
+    }
+
     // Навигация по числам
     const nextBtn = this.container.querySelector("#btn-num-next");
     if (nextBtn) {
       nextBtn.addEventListener("click", () => {
+        this.clearAutoNext();
         sound.playClick();
         this.pairIndex++;
         this.setupNewNumberTask();
@@ -7468,6 +7525,7 @@ class ListeningMode {
     const prevBtn = this.container.querySelector("#btn-num-prev");
     if (prevBtn) {
       prevBtn.addEventListener("click", () => {
+        this.clearAutoNext();
         sound.playClick();
         this.pairIndex = (this.pairIndex - 1 + TEEN_TY_PAIRS.length) % TEEN_TY_PAIRS.length;
         this.setupNewNumberTask();
@@ -7478,6 +7536,7 @@ class ListeningMode {
     const randBtn = this.container.querySelector("#btn-num-random");
     if (randBtn) {
       randBtn.addEventListener("click", () => {
+        this.clearAutoNext();
         sound.playClick();
         this.pairIndex = Math.floor(Math.random() * TEEN_TY_PAIRS.length);
         this.setupNewNumberTask();
@@ -7589,6 +7648,16 @@ class ListeningMode {
           }</div>
         </div>
       `;
+
+      // Автопереход к следующему числу, если включён тумблер
+      if (this.autoNext) {
+        this.clearAutoNext();
+        this.autoNextTimer = setTimeout(() => {
+          this.pairIndex++;
+          this.setupNewNumberTask();
+          this.render();
+        }, 1250);
+      }
     } else {
       sound.playError();
       state.registerError();

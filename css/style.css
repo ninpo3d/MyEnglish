@@ -1,4 +1,4 @@
-/* Стили приложения «MyEnglish: Золотые 20% грамматики» */
+/* Стили приложения «EnglishPareto: Золотые 20% грамматики» */
 
 :root {
   --bg-primary: #080d1a;
@@ -1957,20 +1957,248 @@ body {
   color: #94a3b8;
 }
 
-/* АДАПТИВНОСТЬ */
+/* =======================================================
+   СТИЛИ: ТУМБЛЕР АВТОПЕРЕХОДА
+   ======================================================= */
+.btn-auto-next {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #94a3b8;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+}
+
+.btn-auto-next:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+.btn-auto-next.active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.28) 0%, rgba(5, 150, 105, 0.18) 100%) !important;
+  color: #34d399 !important;
+  border-color: rgba(52, 211, 153, 0.5) !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* =======================================================
+   АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ (MOBILE ERGONOMICS)
+   ======================================================= */
 @media (max-width: 680px) {
+  /* Ультракомпактная шапка в одну строку */
   .app-header {
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
+
+  .logo-area {
+    gap: 8px !important;
+    flex-shrink: 0;
+  }
+
+  .logo-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 18px !important;
+    border-radius: 8px !important;
+  }
+
+  .logo-title-row {
+    gap: 6px !important;
+  }
+
+  .logo-title {
+    font-size: 15px !important;
+  }
+
+  .author-badge {
+    font-size: 9.5px !important;
+    padding: 2px 7px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .logo-subtitle {
+    display: none !important; /* Прячем длинный подзаголовок на смартфонах */
+  }
+
   .header-stats {
-    width: 100%;
-    justify-content: space-between;
+    gap: 4px !important;
+    width: auto !important;
+    justify-content: flex-end !important;
   }
+
+  .stat-pill {
+    padding: 3px 7px !important;
+    font-size: 11px !important;
+    border-radius: 6px !important;
+  }
+
+  .stat-streak {
+    display: inline-flex !important;
+  }
+
+  .header-actions {
+    gap: 4px !important;
+  }
+
+  .btn-icon {
+    padding: 4px 7px !important;
+    font-size: 11px !important;
+  }
+
+  /* Навигационная полоса табов */
   .nav-tabs-bar {
-    justify-content: flex-start;
+    top: 48px !important;
+    padding: 5px 8px !important;
+    gap: 4px !important;
+    justify-content: flex-start !important;
   }
+
+  .nav-tab-btn {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    gap: 5px !important;
+  }
+
+  /* Рабочая область: отступ снизу 96px под закреплённую панель действий */
+  .main-wrapper {
+    padding: 10px 10px 96px !important;
+  }
+
+  .mode-header {
+    margin-bottom: 10px !important;
+    gap: 6px !important;
+  }
+
+  .mode-badge {
+    padding: 4px 10px !important;
+    font-size: 11.5px !important;
+  }
+
+  .task-counter {
+    font-size: 11.5px !important;
+    padding: 2px 8px !important;
+  }
+
+  /* Карточка задания */
+  .task-card {
+    padding: 14px 12px !important;
+    gap: 12px !important;
+    border-radius: 16px !important;
+  }
+
+  .target-phrase {
+    font-size: 18px !important;
+  }
+
+  /* Числа */
+  .number-big-display {
+    padding: 14px 10px !important;
+    margin-bottom: 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .number-digit {
+    font-size: 42px !important;
+  }
+
+  .number-word {
+    font-size: 18px !important;
+    margin-top: 4px !important;
+  }
+
+  .number-choice-grid {
+    gap: 10px !important;
+    margin: 10px 0 !important;
+  }
+
+  .btn-number-choice {
+    padding: 12px 10px !important;
+    border-radius: 14px !important;
+    gap: 4px !important;
+  }
+
+  /* Кнопки звука и микрофона */
+  .audio-buttons-row {
+    gap: 6px !important;
+  }
+
+  .btn-audio-play, .btn-audio-slow, .btn-audio-mic {
+    padding: 8px 8px !important;
+    font-size: 12.5px !important;
+    border-radius: 10px !important;
+  }
+
+  /* Банк слов и собранная строка */
+  .assembled-line {
+    min-height: 48px !important;
+    padding: 8px !important;
+    gap: 6px !important;
+  }
+
+  .word-chip {
+    padding: 7px 12px !important;
+    font-size: 13.5px !important;
+    border-radius: 10px !important;
+  }
+
+  .token-bank {
+    gap: 6px !important;
+    padding: 4px 0 !important;
+  }
+
+  /* =================================================== */
+  /* ЗАКРЕПЛЁННАЯ НИЖНЯЯ ПАНЕЛЬ ДЕЙСТВИЙ (STICKY BAR)     */
+  /* =================================================== */
+  .action-buttons {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: rgba(9, 14, 28, 0.95) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
+    padding: 9px 12px calc(9px + env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 6px !important;
+    z-index: 100 !important;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.7) !important;
+  }
+
+  .action-buttons .btn {
+    flex: 1 !important;
+    padding: 11px 6px !important;
+    font-size: 13px !important;
+    border-radius: 10px !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+  }
+
+  .action-buttons .btn-next {
+    flex: 1.5 !important;
+    font-weight: 700 !important;
+  }
+
+  .app-footer {
+    display: none !important; /* На смартфонах скрываем футер, чтобы освободить всё место экрану */
+  }
+
   .search-box input {
     width: 100%;
   }
